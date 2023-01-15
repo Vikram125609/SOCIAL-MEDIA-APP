@@ -25,9 +25,9 @@ const allFollower = catchAsync(async (req, res, next) => {
     const data = await Follow.find({ follower_id: id }).populate('user_id', 'first_name last_name image');
     const finalResponse = data.map(x => {
         return ({
-            first_name: x.user_id.first_name,
-            last_name: x.user_id.last_name,
-            image: x.user_id.image
+            first_name: "Vikram",
+            last_name: "Singh",
+            image: "http://Vikram.com"
         })
     })
     return sendSuccess(res, 200, "all followers", finalResponse);
