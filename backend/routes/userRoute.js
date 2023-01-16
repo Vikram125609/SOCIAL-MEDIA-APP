@@ -1,6 +1,6 @@
 const express = require('express');
-const { getOtp, getUser } = require('../controllers/userController');
+const { followUser, allFollower } = require('../controllers/userController');
 const router = express.Router();
-router.get("/getOtp", getOtp);
-router.get("/getUser", getUser);
+router.post("/follow/:id", followUser);
+router.get("/allFollower", allFollower);
 module.exports = router;
