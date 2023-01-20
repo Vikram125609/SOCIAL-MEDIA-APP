@@ -1,13 +1,24 @@
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
 import './App.css';
-const allFollower = async () => {
-  const response = await axios.get("http://localhost:3000/api/user/v1/allFollower");
-  console.log(response.data.data);
-}
+import { allFollowers } from './Api/Api';
 const App = () => {
-  allFollower();
+  const [data, setData] = useState([]);
+  const allFollower = async () => {
+    const data = await allFollowers();
+    setData(data?.data?.data);
+  }
+  useEffect(() => {
+    allFollower();
+  },[])
   return (
     <>
+      {
+        data.map((data, index) => {
+          return (
+            <h1 key={index}>{data.first_name}</h1>
+          );
+        })
+      }
     </>
   );
 }
