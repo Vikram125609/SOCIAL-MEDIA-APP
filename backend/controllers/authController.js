@@ -2,6 +2,7 @@ const User = require('../models/userModel');
 const Credential = require('../models/credentialModel');
 const catchAsync = require('../utils/catchAsync');
 const { sendSuccess, sendError } = require('../utils/apiResponse');
+const { getToken } = require('../utils/getToken');
 
 const signup = catchAsync(async (req, res, next) => {
 
@@ -20,10 +21,16 @@ const signup = catchAsync(async (req, res, next) => {
     await credential.save();
     await user.save();
 
+    console.log(req.body)
+
+    const token = getToken(credential, user);
+
     const finalResponse = {
         credential,
-        user
+        user,
+        token
     }
+
 
     return sendSuccess(res, 200, "Signup Successfully", finalResponse);
 });

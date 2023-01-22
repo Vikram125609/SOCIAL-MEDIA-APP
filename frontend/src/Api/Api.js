@@ -1,5 +1,7 @@
 import axios from "axios";
 const API = axios.create({
-    baseURL: "http://43.204.142.84/api/user/v1"
+    baseURL: "http://localhost:3000/api/user/v1"
 })
+
 export const allFollowers = () => API.get("/allFollower");
+export const signup = (data) => API.post("/auth/signup",data)
