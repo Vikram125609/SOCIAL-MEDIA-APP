@@ -9,6 +9,7 @@ const User = () => {
         const data = await allFollowers();
         setData(data?.data?.data);
         setLoading(false);
+        console.log(data?.data?.data)
     }
     useEffect(() => {
         allFollower();
@@ -18,7 +19,10 @@ const User = () => {
             {
                 loading ? (<Loader />) : (
                     data.map((data, index) => {
-                        return (<h1 key={index}>{ data.first_name }</h1>);
+                        return (
+                            <div key={index}>
+                                <h1>{data.first_name} {data.last_name} {data.image}</h1>
+                            </div>);
                     })
                 )
             }

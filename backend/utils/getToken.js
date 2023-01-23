@@ -6,7 +6,7 @@ const getToken = (credential, user) => {
         email: credential.email,
         phone: credential.phone
     };
-    return jwt.sign(payload, process.env.SECRET_KEY);
+    return 'Bearer ' + jwt.sign(payload, process.env.SECRET_KEY);
 };
 
 const verifyToken = (token) => {

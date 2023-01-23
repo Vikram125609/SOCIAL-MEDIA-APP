@@ -1,33 +1,35 @@
 const { sendSuccess } = require("../utils/apiResponse");
 const catchAsync = require("../utils/catchAsync");
 const Follow = require('../models/followModel');
+const User = require('../models/userModel');
 const { default: mongoose } = require("mongoose");
 
 const followUser = catchAsync(async (req, res, next) => {
-    const id = req.params.id;
-    const user_id = "63c2e7131c650bfd601e000d";
-    const data = await Follow.find({ follower_id: id, user_id: user_id });
-    if (data.length == 0) {
-        const follow = new Follow({
-            user_id: user_id,
-            follower_id: id
-        })
-        await follow.save();
-    }
-    else {
-        await Follow.findOneAndDelete({ follower_id: id, user_id: user_id });
-    }
-    return sendSuccess(res, 200, "follower", data)
+    const follow_id = req.params.id;
+    const user_id = "63ce2fd170243c1f28f2e99b";
+    const data = new Follow({
+        user_id: user_id,
+        follow_id: follow_id
+    })
+    await data.save();
+    const user = await User.findByIdAndUpdate(user_id, {
+        $push: {
+            "follow_user": follow_id
+        }
+    }, { new: true }
+    );
+    console.log(user)
+    return sendSuccess(res, 200, 'follow user', user)
 });
 
 const allFollower = catchAsync(async (req, res, next) => {
-    const id = "63c2bc3b41ddb4301ac0a250";
-    const data = await Follow.find({ follower_id: id }).populate('user_id', 'first_name last_name image');
-    const finalResponse = data.map(x => {
+    const id = "63ce2f5f70243c1f28f2e997";
+    const data = await Follow.find({ follow_id: id }).populate('user_id', 'first_name last_name image');
+    const finalResponse = data.map(user => {
         return ({
-            first_name: "Vikram",
-            last_name: "Singh",
-            image: "http://Vikram.com"
+            first_name: user?.user_id?.first_name,
+            last_name: user?.user_id?.last_name,
+            image: user?.user_id?.image
         })
     })
     return sendSuccess(res, 200, "all followers", finalResponse);
