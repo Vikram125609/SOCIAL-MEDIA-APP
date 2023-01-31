@@ -4,4 +4,5 @@ const API = axios.create({
 })
 
 export const allFollowers = () => API.get("/allFollower");
-export const signup = (data) => API.post("/auth/signup",data)
+export const signup = (data) => API.post("/auth/signup", data)
+export const user = (data) => API.get("",data);
