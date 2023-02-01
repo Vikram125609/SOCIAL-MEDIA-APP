@@ -34,4 +34,12 @@ const allFollower = catchAsync(async (req, res, next) => {
     })
     return sendSuccess(res, 200, "all followers", finalResponse);
 })
-module.exports = { followUser, allFollower };
+
+const me = catchAsync(async (req, res, next) => {
+    const { id } = req.params;
+    const data = await User.findById(id);
+    // const finalResponse = Promise.all([data]);
+    // console.log(req.headers.authorization);
+    return sendSuccess(res, 200, 'userdetail', data)
+})
+module.exports = { followUser, allFollower, me };
