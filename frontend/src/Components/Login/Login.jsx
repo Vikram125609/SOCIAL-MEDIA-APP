@@ -21,7 +21,7 @@ const Login = () => {
     })
 
     useEffect(() => {
-        if (localStorage.getItem('token') != null) navigate("/home")
+        if (localStorage.getItem('token')) navigate("/home")
     }, []);
 
     const onSubmit = async (e) => {
@@ -44,7 +44,7 @@ const Login = () => {
             localStorage.setItem("user_id", data.user.user_id);
             localStorage.setItem("block_user", data.user.block_user);
             localStorage.setItem("follow_user", data.user.follow_user);
-            navigate("/user");
+            navigate("/home");
         } catch (error) {
             console.log(error);
         }

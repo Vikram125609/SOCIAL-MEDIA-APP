@@ -5,6 +5,7 @@ import Loader from "../Loader/Loader";
 
 const Home = () => {
     const [loading, setLoading] = useState(false);
+    const [userdata, setUserdata] = useState();
     const me = async () => {
         const body = {
             token: localStorage.getItem('token'),
@@ -12,8 +13,12 @@ const Home = () => {
         }
         try {
             setLoading(true);
-            const data = await user(body);
-            console.log(data?.data?.data)
+            let data = await user(body);
+            data = data?.data?.data;
+            localStorage.setItem('image', data.image);
+            localStorage.setItem("block_user", data.block_user);
+            localStorage.setItem("follow_user", data.follow_user);
+            setUserdata(data);
             setLoading(false);
         } catch (error) {
             console.log(error);
@@ -28,6 +33,12 @@ const Home = () => {
                 loading ? (<Loader />) : (
                     <div>
                         <h1>This is the home page</h1>
+                        <h1>{userdata?.first_name}</h1>
+                        <h1>{userdata?.last_name}</h1>
+                        <h1>{userdata?._id}</h1>
+                        <h1>{userdata?.user_id}</h1>
+                        {/* <h1>{ userdata?.image }</h1> */}
+                        <img src={userdata?.image} alt="" width={"100px"} style={{ borderRadius: "50%", objectFit:"cover" }} />
                     </div>
                 )
             }
