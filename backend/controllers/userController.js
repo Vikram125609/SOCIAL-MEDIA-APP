@@ -6,7 +6,7 @@ const { default: mongoose } = require("mongoose");
 
 const followUser = catchAsync(async (req, res, next) => {
     const follow_id = req.params.id;
-    const user_id = "63ce2fd170243c1f28f2e99b";
+    const user_id = "63d76d37b5656f8db054f989";
     const data = new Follow({
         user_id: user_id,
         follow_id: follow_id
@@ -23,7 +23,7 @@ const followUser = catchAsync(async (req, res, next) => {
 });
 
 const allFollower = catchAsync(async (req, res, next) => {
-    const id = "63ce2f5f70243c1f28f2e997";
+    const id = "63d76d37b5656f8db054f989";
     const data = await Follow.find({ follow_id: id }).populate('user_id', 'first_name last_name image');
     const finalResponse = data.map(user => {
         return ({
@@ -34,4 +34,11 @@ const allFollower = catchAsync(async (req, res, next) => {
     })
     return sendSuccess(res, 200, "all followers", finalResponse);
 })
-module.exports = { followUser, allFollower };
+
+const me = catchAsync(async (req, res, next) => {
+    const { id } = req.params;
+    const data = await User.findById(id);
+    const finalResponse = JSON.parse(JSON.stringify(data));
+    return sendSuccess(res, 200, 'userdetail', finalResponse)
+})
+module.exports = { followUser, allFollower, me };

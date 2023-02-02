@@ -8,9 +8,27 @@ const { getToken } = require('../utils/getToken');
 
 const signup = catchAsync(async (req, res, next) => {
 
+    const { first_name, last_name, phone, email } = req.body
+
+    const login = await Credential.findOne({ "phone": phone, "email": email });
+    const userExist = await User.findOne({ "user_id": login?._id });
+    if (userExist) {
+        const credential = {
+            phone: phone,
+            email: email
+        }
+        const token = getToken(credential, userExist);
+        const finalResponse = {
+            credential,
+            user: userExist,
+            token
+        }
+        return sendSuccess(res, 200, 'Login Successfully', finalResponse);
+    }
+    
     const credential = new Credential({
-        phone: req.body.phone,
-        email: req.body.email
+        phone: phone,
+        email: email
     });
 
 
@@ -18,8 +36,8 @@ const signup = catchAsync(async (req, res, next) => {
     const data = await uploadImage(imagePath);
 
     const user = new User({
-        first_name: req.body.first_name,
-        last_name: req.body.last_name,
+        first_name: first_name,
+        last_name: last_name,
         image: data.url,
         user_id: credential._id,
     });
@@ -28,7 +46,7 @@ const signup = catchAsync(async (req, res, next) => {
     await user.save();
 
 
-    
+
     const token = getToken(credential, user);
 
     const finalResponse = {
