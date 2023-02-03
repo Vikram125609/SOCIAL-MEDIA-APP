@@ -16,7 +16,7 @@ const iconColor = "white"
 
 window.onscroll = () => {
     let w = window.innerWidth;
-    if (w === 360) {
+    if (w < 500) {
         let currentScrollPos = window.pageYOffset;
         if (prevScrollpos > currentScrollPos) {
             document.getElementById("navbar").style.bottom = "0px";
@@ -30,7 +30,7 @@ window.onscroll = () => {
 
 const navIconWidth = () => {
     let w = window.innerWidth;
-    if (w === 360) {
+    if (w < 500) {
         const mobileNavStyle = {
             width: `${w}px`,
             justifyContent: `space-around`
@@ -49,13 +49,13 @@ const navIconWidth = () => {
 
 const fixed = () => {
     let w = window.innerWidth;
-    if (w === 360) return "bottom"
+    if (w < 500) return "bottom"
     else return "top"
 }
 
 const display = () => {
     let w = window.innerWidth;
-    if (w === 360) return "none"
+    if (w < 500) return "none"
     else return "block"
 }
 
