@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { allFollowers } from '../../Api/Api';
 import Loader from '../Loader/Loader';
+import "./User.css"
 const User = () => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
