@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { posts, user } from "../../Api/Api";
 import Loader from "../Loader/Loader";
-import "./Home.css" 
+import "./Home.css"
 
 const Home = () => {
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
     const [userdata, setUserdata] = useState();
     const me = async () => {
         const body = {
@@ -34,8 +36,13 @@ const Home = () => {
         }
     }
     useEffect(() => {
-        me();
-        // feed();
+        if (localStorage.getItem('token') === null) {
+            navigate('/')
+        }
+        else {
+            me();
+            // feed();
+        }
     }, [])
     return (
         <>
@@ -47,7 +54,7 @@ const Home = () => {
                         <h1>{userdata?.last_name}</h1>
                         <h1>{userdata?._id}</h1>
                         <h1>{userdata?.user_id}</h1>
-                        <h1>{ userdata?.image }</h1>
+                        <h1>{userdata?.image}</h1>
                         <img src={userdata?.image} alt="" width={"100px"} style={{ borderRadius: "50%", objectFit: "cover" }} />
                     </div>
                 )
