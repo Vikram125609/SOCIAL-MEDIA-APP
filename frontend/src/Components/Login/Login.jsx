@@ -261,7 +261,7 @@ const Login = () => {
                                 </Grid>
                                 <Grid item>
                                     <Link to="/signup" style={{ "textDecoration": "none" }} variant="body2">
-                                        Already have an account ? Sign in
+                                        Don't have an account ? Sign up
                                     </Link>
                                 </Grid>
                             </Grid>
