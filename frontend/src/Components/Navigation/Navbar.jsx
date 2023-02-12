@@ -7,6 +7,7 @@ import { Stack } from "@mui/material";
 import { TextField } from "@mui/material";
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import { InputAdornment } from "@mui/material";
+import { Avatar } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import HomeIcon from '@mui/icons-material/Home';
 import PeopleIcon from '@mui/icons-material/People';
@@ -88,7 +89,7 @@ const Navbar = () => {
                                     size="large"
                                     edge="start"
                                     color="inherit">
-                                    <AccountCircleIcon fontSize="large" />
+                                    <Avatar alt={localStorage.getItem('first_name')} src={localStorage.getItem('image')} />
                                 </IconButton>
                             </Link>
                         </Stack>
