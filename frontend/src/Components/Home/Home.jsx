@@ -45,7 +45,7 @@ const Home = () => {
         }
     }, [])
     return (
-        <>
+        <div className="homeContainer">
             {
                 loading ? (<Loader />) : (
                     <div>
@@ -54,12 +54,11 @@ const Home = () => {
                         <h1>{userdata?.last_name}</h1>
                         <h1>{userdata?._id}</h1>
                         <h1>{userdata?.user_id}</h1>
-                        <h1>{userdata?.image}</h1>
                         <img src={userdata?.image} alt="" width={"100px"} style={{ borderRadius: "50%", objectFit: "cover" }} />
                     </div>
                 )
             }
-        </>
+        </div>
     );
 }
 export default Home
