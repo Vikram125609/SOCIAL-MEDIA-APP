@@ -1,5 +1,6 @@
-/* @media (min-width: 1440px) {
+@media (min-width: 1440px) {
   body {
-    padding: 82px;
+    padding-top: 64px;
+    margin: 0px 124px 0px 124px;
   }
-} */
+}

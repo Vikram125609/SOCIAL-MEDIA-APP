@@ -22,7 +22,8 @@ const User = () => {
                     data.map((data, index) => {
                         return (
                             <div key={index}>
-                                <h1>{data.first_name} {data.last_name} {data.image}</h1>
+                                <h1>{data.first_name} {data.last_name}</h1>
+                                <img src={data?.image} alt="" width={"100px"} style={{ borderRadius: "50%", objectFit: "cover" }} />
                             </div>);
                     })
                 )
