@@ -37,7 +37,7 @@ const Navbar = () => {
                                 endAdornment: <InputAdornment position="end"> <SearchIcon />  </InputAdornment>,
                             }} />
                         </Stack>
-                        <Stack direction="row" spacing={3}>
+                        <Stack direction="row" spacing={6}>
                             <Link to="/home" >
                                 <IconButton
                                     style={{ color: `${iconColor}` }}

@@ -51,6 +51,8 @@ const Home = () => {
                 loading ? (<Loader />) : (
                     <div>
                         <Post />
+                        <Post />
+                        <Post />
                     </div>
                 )
             }

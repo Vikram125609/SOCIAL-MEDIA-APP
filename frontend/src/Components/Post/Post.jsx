@@ -1,10 +1,128 @@
-import { Card } from '@mui/material';
-import { Avatar } from '@mui/material';
+import * as React from 'react';
+import { styled } from '@mui/material/styles';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import CardMedia from '@mui/material/CardMedia';
+import CardContent from '@mui/material/CardContent';
+import CardActions from '@mui/material/CardActions';
+import Collapse from '@mui/material/Collapse';
+import Avatar from '@mui/material/Avatar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import { red } from '@mui/material/colors';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import ShareIcon from '@mui/icons-material/Share';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { useState } from 'react';
+
+
+const ExpandMore = styled((props) => {
+    const { expand, ...other } = props;
+    return <IconButton {...other} />;
+})(({ theme, expand }) => ({
+    transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
+    marginLeft: 'auto',
+    transition: theme.transitions.create('transform', {
+        duration: theme.transitions.duration.shortest,
+    }),
+}));
+
+
 const Post = () => {
+    const [expanded, setExpanded] = React.useState(false);
+    const [state, setState] = useState(false);
+    const [color, setColor] = useState();
+    const handleExpandClick = () => {
+        setExpanded(!expanded);
+    };
+
+    const like = () => {
+        if (state) {
+            setColor("");
+            setState(false);
+        }
+        else {
+            setColor("red");
+            setState(true);
+        }
+    }
+
     return (
-        <div>
-            <p style={{ textAlign: "justify" }}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate illum culpa quia quam cum architecto soluta, obcaecati distinctio suscipit? Voluptates beatae quasi, quo reiciendis quidem fuga fugiat porro dolorem consequuntur tenetur voluptatem possimus nobis sapiente error unde perspiciatis quae, repellat, fugit veritatis cupiditate eligendi. Illo accusantium totam dolore quasi laborum temporibus sed mollitia laboriosam architecto, expedita voluptatibus porro tenetur nulla consectetur ratione explicabo soluta harum quod quae voluptate necessitatibus saepe quibusdam. Et asperiores est impedit earum natus quia fugit, voluptate tenetur maxime doloremque temporibus quos delectus incidunt, modi iusto quo ab inventore alias. Ut quae voluptas corrupti esse quo iste! Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia labore magni quas animi id provident asperiores eos laudantium, sapiente repudiandae officiis. Tempore ratione, dolorem tempora tenetur voluptatem enim eaque, maxime pariatur, error voluptatum nam qui quam quidem quae sit cum! Voluptatem accusantium consequuntur illum facere dignissimos laboriosam nisi aliquam quaerat ea a, eius possimus neque in unde optio repudiandae cupiditate quas doloribus, nobis pariatur autem sunt! Dolores voluptas ullam deleniti delectus dolore itaque veritatis dolorem eum modi aliquid molestiae magnam praesentium adipisci, a necessitatibus atque ad, iste incidunt, quia facilis voluptatibus corporis error hic? Harum reiciendis suscipit, neque tenetur accusamus sapiente reprehenderit esse omnis sed, distinctio nam cupiditate quis nostrum? Fugit quidem omnis rerum saepe nulla excepturi asperiores accusantium totam hic aliquam perferendis ducimus corrupti placeat ut rem alias, repellendus ipsum consequatur cum necessitatibus, quos nam numquam earum nostrum. Alias non at labore sed sequi totam nihil, fuga reprehenderit quasi autem, neque natus eligendi, minima dolorum perspiciatis reiciendis distinctio. Omnis, consequuntur nam. Sunt minima deserunt asperiores quibusdam. Amet sint quos molestias, explicabo laudantium minima asperiores quidem architecto in nobis? Ipsum laboriosam beatae nulla, placeat voluptate sapiente aspernatur necessitatibus consequatur ab magni iste molestiae fugit, ad quisquam. Facere deserunt tenetur doloribus quisquam eos explicabo accusantium sed deleniti. Pariatur, itaque? Numquam aliquid fugit molestias doloribus, sed quaerat consectetur laboriosam assumenda libero itaque iste dolore fugiat quam mollitia pariatur, nisi unde perferendis sapiente excepturi non aut reprehenderit rem! Saepe, quod sunt alias dicta corporis consequatur magni, deleniti vel cum velit ipsa modi quos ipsam autem doloribus corrupti aliquam? Earum veniam, ullam ex voluptatem error ratione dolorem sunt odit modi quibusdam dolor, nobis vitae iste a ipsa nemo libero. Quis perferendis assumenda sit itaque! Doloremque eum cumque est consectetur perspiciatis consequuntur nostrum voluptatum ea dicta quos expedita quibusdam praesentium autem, vitae incidunt tempora. Earum quas magni animi at architecto voluptates id accusantium placeat. Ducimus veritatis, harum minima ipsam molestiae nostrum! Animi sequi quidem deserunt nemo maxime necessitatibus illum quis, ad adipisci obcaecati labore perferendis est reprehenderit. Perspiciatis dolorem deserunt repudiandae eligendi omnis repellat, consectetur assumenda et labore dolorum, maxime minus laudantium dolore ipsum nesciunt corporis quas optio! Eveniet quia maxime repellat? At consequuntur perspiciatis aspernatur harum suscipit quae mollitia sequi illo, libero quia delectus modi. Eos perspiciatis nihil quibusdam adipisci, tempora assumenda cumque iure quam doloribus harum amet quaerat distinctio enim, expedita iusto laborum nesciunt minima delectus explicabo quisquam. Vel adipisci expedita repudiandae quibusdam cupiditate tempora, sit doloremque officiis. Possimus ullam odit et voluptatibus deserunt voluptatem eaque eveniet libero, suscipit laudantium numquam voluptate necessitatibus accusantium non voluptates culpa commodi beatae fugit adipisci magnam repudiandae! Consequatur, porro deserunt nemo nulla consectetur nisi voluptates? Quia autem culpa maiores adipisci quos eligendi. Deleniti libero veritatis soluta assumenda modi ab dolores, eum facere deserunt excepturi minus molestias beatae natus quam at quis incidunt ut harum nemo placeat optio velit. Deleniti expedita consequatur, ab aliquam quas distinctio consequuntur. Architecto minima aperiam reiciendis esse eligendi veniam nobis inventore harum, mollitia facilis, modi sapiente optio totam iusto veritatis tempora deserunt incidunt dolorum rem sunt. Reprehenderit delectus numquam quia excepturi! Iusto, eligendi quidem eaque dolorum incidunt repudiandae neque dicta voluptas laudantium ullam laborum vel. Fugit, maxime. Aliquid autem quibusdam nesciunt, voluptatibus dolorem praesentium delectus eveniet perspiciatis ducimus soluta earum quia ad ipsum itaque hic perferendis. Dolorum velit totam quam aliquam dolorem deserunt nihil voluptas numquam ad minima soluta sunt deleniti ipsam, natus enim. Voluptas architecto neque non, expedita praesentium deleniti dolorem! Saepe rem fuga quis ipsa officiis molestias cumque, doloribus, accusantium hic doloremque nemo! Nemo quasi recusandae ex nam! Enim atque reprehenderit nihil dolor ullam nulla eveniet blanditiis praesentium aperiam ipsam, vero voluptas in iure quasi nesciunt dignissimos rem alias ea modi voluptates labore saepe veniam? Nostrum praesentium ratione, officia aspernatur debitis ad ab eos suscipit voluptatem dolor necessitatibus hic modi facilis quia quidem quae accusamus, sit corporis! Voluptates mollitia harum dolor qui eum tenetur velit sapiente sunt a atque consequatur, doloremque similique placeat nemo blanditiis? Laudantium, quisquam corrupti. Maiores eos beatae iste consectetur id voluptatibus amet vero sunt magni odio accusamus consequatur esse ut cum doloremque harum facilis, quam aspernatur corrupti? Omnis quidem similique maiores maxime recusandae debitis odit expedita aperiam iusto facilis. Maxime voluptate sunt neque non quos magnam error amet eum porro sit nulla ipsum temporibus dicta odit, qui id assumenda, tempora optio fuga voluptates! Quam corporis tempore molestias asperiores quia vitae excepturi eum itaque, laudantium voluptatum earum. Rem necessitatibus eius nam assumenda, soluta voluptate beatae, enim molestiae eveniet quaerat, sequi placeat illum voluptatem iusto autem. Ea sint veritatis neque excepturi blanditiis consectetur possimus odit cupiditate quod, mollitia, praesentium tempore eveniet vero libero explicabo hic ab laudantium odio nemo necessitatibus culpa sequi nisi aspernatur quas. Facere saepe ipsa consequuntur tempora doloremque ipsum et quibusdam? Veniam vero fugit ipsam impedit cupiditate qui pariatur ad a minus adipisci veritatis odio deleniti similique dicta repellat modi, harum alias distinctio accusamus magnam possimus, beatae mollitia libero reiciendis! Voluptas eveniet omnis recusandae dolorem ipsum laboriosam nihil quibusdam iure? Voluptate, exercitationem aspernatur tenetur quam reprehenderit facere? Adipisci odit consequatur repudiandae illum dicta dolores, minus facilis! Itaque, quis. Dignissimos quae incidunt tenetur consequuntur adipisci neque porro cupiditate perferendis amet dolorem sapiente necessitatibus harum libero, eius iure accusamus qui cum eaque atque veniam, voluptatem laborum reiciendis aperiam magni! Odit, voluptate. Explicabo laborum officia laboriosam vero veniam, doloribus quaerat quibusdam exercitationem voluptas sequi eaque maiores aliquid fugiat officiis tempore modi deleniti cupiditate commodi earum consequuntur nostrum aut minima. Temporibus fugiat vero consectetur natus odit sunt, provident amet minus, beatae aliquid ab facilis laborum sit similique officiis omnis! Repellendus, aliquam sapiente quae magni optio, neque mollitia fugit quisquam iure eligendi nulla nemo ipsam perspiciatis id placeat quos asperiores! Pariatur deserunt minus velit excepturi recusandae cum, iure maiores consequuntur nam animi sequi id libero facere suscipit modi impedit vitae optio ratione voluptatum vel ullam tempora natus ducimus commodi? Ratione eaque deleniti alias asperiores veniam sed labore, in aut ipsum neque qui unde enim exercitationem repellendus nisi eos. Enim dolorum ab vel tempora saepe asperiores dolore non maiores, beatae deserunt provident.</p>
-        </div>
+        <Card sx={{ my: "50px", maxWidth: 500 }}>
+            <CardHeader
+                avatar={
+                    <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+                        R
+                    </Avatar>
+                }
+                action={
+                    <IconButton aria-label="settings">
+                        <MoreVertIcon />
+                    </IconButton>
+                }
+                title="Shrimp and Chorizo Paella"
+                subheader="September 14, 2016"
+            />
+            <CardMedia
+                component="img"
+                height="194"
+                image={localStorage.getItem('image')}
+                alt="Paella dish"
+            />
+            <CardContent>
+                <Typography variant="body2" color="text.secondary">
+                    This impressive paella is a perfect party dish and a fun meal to cook
+                    together with your guests. Add 1 cup of frozen peas along with the mussels,
+                    if you like.
+                </Typography>
+            </CardContent>
+            <CardActions disableSpacing>
+                <IconButton style={{ "color": `${color}` }} onClick={like} aria-label="add to favorites">
+                    <FavoriteIcon />
+                </IconButton>
+                <IconButton aria-label="share">
+                    <ShareIcon />
+                </IconButton>
+                <ExpandMore
+                    expand={expanded}
+                    onClick={handleExpandClick}
+                    aria-expanded={expanded}
+                    aria-label="show more"
+                >
+                    <ExpandMoreIcon />
+                </ExpandMore>
+            </CardActions>
+            <Collapse in={expanded} timeout="auto" unmountOnExit>
+                <CardContent>
+                    <Typography paragraph>Method:</Typography>
+                    <Typography paragraph>
+                        Heat 1/2 cup of the broth in a pot until simmering, add saffron and set
+                        aside for 10 minutes.
+                    </Typography>
+                    <Typography paragraph>
+                        Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet over
+                        medium-high heat. Add chicken, shrimp and chorizo, and cook, stirring
+                        occasionally until lightly browned, 6 to 8 minutes. Transfer shrimp to a
+                        large plate and set aside, leaving chicken and chorizo in the pan. Add
+                        pimentón, bay leaves, garlic, tomatoes, onion, salt and pepper, and cook,
+                        stirring often until thickened and fragrant, about 10 minutes. Add
+                        saffron broth and remaining 4 1/2 cups chicken broth; bring to a boil.
+                    </Typography>
+                    <Typography paragraph>
+                        Add rice and stir very gently to distribute. Top with artichokes and
+                        peppers, and cook without stirring, until most of the liquid is absorbed,
+                        15 to 18 minutes. Reduce heat to medium-low, add reserved shrimp and
+                        mussels, tucking them down into the rice, and cook again without
+                        stirring, until mussels have opened and rice is just tender, 5 to 7
+                        minutes more. (Discard any mussels that don&apos;t open.)
+                    </Typography>
+                    <Typography>
+                        Set aside off of the heat to let rest for 10 minutes, and then serve.
+                    </Typography>
+                </CardContent>
+            </Collapse>
+        </Card>
     );
 }
 export default Post;
