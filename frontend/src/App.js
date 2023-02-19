@@ -6,6 +6,7 @@ import Login from './Components/Login/Login';
 import Home from './Components/Home/Home';
 import Navigation from './Components/Navigation/Navbar';
 import SignUp from './Components/Signup/Signup';
+import Post from './Components/Post/Post';
 const App = () => {
   return (
     <>
@@ -14,6 +15,7 @@ const App = () => {
         <Route path="/" exact element={<Login />} />
         <Route path="/home" exact element={<Home />} />
         <Route path="/user" exact element={<User />} />
+        <Route path="/post" exact element={<Post />} />
         <Route path="/signup" exact element={<SignUp />} />
       </Routes>
     </>

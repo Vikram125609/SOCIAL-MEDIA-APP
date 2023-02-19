@@ -4,7 +4,27 @@ const postSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'User'
     },
-    media: {
-        
-    }
+    image: {
+        type: String,
+        required: [true, 'Please provide the image url']
+    },
+    description: {
+        type: String,
+        default: ""
+    },
+    likes: [
+        {
+            type: mongoose.Schema.ObjectId,
+            ref: 'Like'
+        }
+    ],
+    comments: [
+        {
+            type: mongoose.Schema.ObjectId,
+            ref: 'Comment'
+        }
+    ]
 });
+
+const Post = mongoose.model('Post', postSchema);
+module.exports = Post;

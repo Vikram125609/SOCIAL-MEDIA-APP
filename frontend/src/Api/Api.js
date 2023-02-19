@@ -11,3 +11,4 @@ export const signup = (data) => API.post("/auth/signup", data)
 export const signin = (data) => API.post("/auth/signup", data)
 export const user = (data) => API.get(`/me/${data._id}`);
 export const posts = () => API.get('/feed');
+export const allUsers = () => API.get('/allusers');

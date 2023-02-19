@@ -56,7 +56,7 @@ const Navbar = () => {
                                     <PeopleIcon fontSize="large" />
                                 </IconButton>
                             </Link>
-                            <Link to="/home" >
+                            <Link to="/post" >
                                 <IconButton
                                     style={{ color: `${iconColor}` }}
                                     size="large"

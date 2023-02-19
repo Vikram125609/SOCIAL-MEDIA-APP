@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { posts, user } from "../../Api/Api";
-import Post  from "../Post/Post"
+import Feed  from "../Feed/Feed"
 import Loader from "../Loader/Loader";
 import "./Home.css"
 
@@ -50,9 +50,9 @@ const Home = () => {
             {
                 loading ? (<Loader />) : (
                     <div>
-                        <Post />
-                        <Post />
-                        <Post />
+                        <Feed />
+                        <Feed />
+                        <Feed />
                     </div>
                 )
             }
