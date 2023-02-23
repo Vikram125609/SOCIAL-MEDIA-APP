@@ -7,6 +7,7 @@ const API = axios.create({
 })
 
 export const allFollowers = () => API.get("/allFollower");
+export const followUser = (id) => API.post(`/follow/${id}`)
 export const signup = (data) => API.post("/auth/signup", data)
 export const signin = (data) => API.post("/auth/signup", data)
 export const user = (data) => API.get(`/me/${data._id}`);

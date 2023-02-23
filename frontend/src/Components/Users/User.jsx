@@ -2,6 +2,7 @@ import { Avatar } from '@material-ui/core';
 import React, { useState, useEffect } from 'react';
 import { allFollowers, allUsers } from '../../Api/Api';
 import Loader from '../Loader/Loader';
+import Usercard from './Usercard';
 import "./User.css"
 const User = () => {
     const [data, setData] = useState([]);
@@ -44,12 +45,7 @@ const User = () => {
                     users.map((data, index) => {
                         return (
                             <div key={index}>
-                                <p>{data._id}</p>
-                                <p>{data.first_name}</p>
-                                <p>{data.last_name}</p>
-                                <p>{data.image}</p>
-                                <Avatar src={ data.image } />
-                                <p>{data.user_id}</p>
+                                <Usercard  id={data._id} user_id={data.user_id} first_name={data.first_name} last_name={data.last_name} image={data.image} />
                             </div>
                         );
                     })
