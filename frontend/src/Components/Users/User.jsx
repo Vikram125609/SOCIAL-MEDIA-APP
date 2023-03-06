@@ -45,7 +45,7 @@ const User = () => {
                     users.map((data, index) => {
                         return (
                             <div key={index}>
-                                <Usercard  id={data._id} user_id={data.user_id} first_name={data.first_name} last_name={data.last_name} image={data.image} />
+                                <Usercard  id={data._id} user_id={data.user_id} first_name={data.first_name} last_name={data.last_name} image={data.image} isFollowed={data.isFollowed} />
                             </div>
                         );
                     })

@@ -5,17 +5,20 @@ import React, { useState, useEffect } from 'react';
 import { followUser } from '../../Api/Api';
 const Usercard = (props) => {
     const [follow, setFollow] = useState("Follow");
-    const { id, user_id, first_name, last_name, image } = props;
+    const { id, user_id, first_name, last_name, image , isFollowed } = props;
     const updateFollow = async () => {
         if (follow === "Follow") {
-            setFollow("Followed");
+            setFollow("Unfollow");
+            console.log(id);
             await followUser(id);
         }
         else {
             setFollow("Follow");
-            await followUser(id);
         }
     }
+    const isFollow = (isFollowed) => {
+        return follow;
+    };
     return (
         <>
             <Box sx={{
@@ -30,7 +33,7 @@ const Usercard = (props) => {
                 <Stack sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} direction='row' spacing={2} >
                     <Avatar src={image} />
                     <p>{first_name} {last_name}</p>
-                    <Button onClick={updateFollow} variant='contained' color='secondary'>{follow}</Button>
+                    <Button onClick={updateFollow} variant='contained' color='secondary'>{isFollowed ? "Unfollow" : follow}</Button>
                     <Button variant='contained' color='secondary'>Friend</Button>
                 </Stack>
             </Box>
