@@ -6,8 +6,10 @@ const Follow = require('./../models/followModel');
 
 const allUsers = catchAsync(async (req, res, next) => {
     let { _id } = req.user;
+    // let _id = "63d76d37b5656f8db054f989";
     let data = await User.find();
     let user = await User.findById(req.user._id);
+    // let user = await User.findById("63d76d37b5656f8db054f989");
     let following = await Follow.find({ user_id: _id });
     data = JSON.parse(JSON.stringify(data));
     user = JSON.parse(JSON.stringify(user));

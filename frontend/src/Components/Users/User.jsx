@@ -1,5 +1,6 @@
 import { Avatar } from '@material-ui/core';
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 import { allFollowers, allUsers } from '../../Api/Api';
 import Loader from '../Loader/Loader';
 import Usercard from './Usercard';
@@ -8,6 +9,7 @@ const User = () => {
     const [data, setData] = useState([]);
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
     const allFollower = async () => {
         setLoading(true);
         const data = await allFollowers();
@@ -24,8 +26,14 @@ const User = () => {
     }
 
     useEffect(() => {
-        allFollower();
-        allUser();
+        if (localStorage.getItem('token') === null) {
+            navigate('/')
+        }
+        else {
+            console.log(localStorage.getItem('token'));
+            allFollower();
+            allUser();
+        }
     }, [])
     return (
         <>
@@ -45,7 +53,7 @@ const User = () => {
                     users.map((data, index) => {
                         return (
                             <div key={index}>
-                                <Usercard  id={data._id} user_id={data.user_id} first_name={data.first_name} last_name={data.last_name} image={data.image} isFollowed={data.isFollowed} />
+                                <Usercard id={data._id} user_id={data.user_id} first_name={data.first_name} last_name={data.last_name} image={data.image} isFollowed={data.isFollowed} />
                             </div>
                         );
                     })
