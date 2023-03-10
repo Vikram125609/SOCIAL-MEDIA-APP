@@ -6,7 +6,7 @@ const { default: mongoose } = require("mongoose");
 
 const followUser = catchAsync(async (req, res, next) => {
     const follow_id = req.params.id;
-    const user_id = "63d76d37b5656f8db054f989";
+    const user_id = req.user._id;
     const data = new Follow({
         user_id: user_id,
         follow_id: follow_id
@@ -23,7 +23,7 @@ const followUser = catchAsync(async (req, res, next) => {
 });
 
 const allFollower = catchAsync(async (req, res, next) => {
-    const id = "63d76d37b5656f8db054f989";
+    const id = req.user._id;
     const data = await Follow.find({ follow_id: id }).populate('user_id', 'first_name last_name image');
     const finalResponse = data.map(user => {
         return ({
@@ -33,12 +33,47 @@ const allFollower = catchAsync(async (req, res, next) => {
         })
     })
     return sendSuccess(res, 200, "all followers", finalResponse);
-})
+});
 
 const me = catchAsync(async (req, res, next) => {
     const { id } = req.params;
     const data = await User.findById(id);
     const finalResponse = JSON.parse(JSON.stringify(data));
     return sendSuccess(res, 200, 'userdetail', finalResponse)
+});
+
+const profile = catchAsync(async (req, res, next) => {
+    const { id } = req.params;
+    console.log("here will be the follower data sortly");
+    const followers = await Follow.aggregate([
+        {
+            $match: { "follow_id": mongoose.Types.ObjectId(id) }
+        },
+        {
+            $lookup: {
+                "localField": "user_id",
+                "foreignField": "_id",
+                "from": "users",
+                "as": "followers"
+            }
+        },
+        {
+            $unwind: "$followers"
+        },
+        {
+            $project: {
+                "_id": "$followers._id",
+                "first_name": "$followers.first_name",
+                "last_name": "$followers.last_name",
+                "image": "$followers.image",
+                "block_user": "$followers.block_user",
+                "follow_user": "$followers.follow_user"
+            }
+        }
+    ])
+    const finalResponse = {
+        followers: followers
+    }
+    return sendSuccess(res, 200, 'userdetail', finalResponse)
 })
-module.exports = { followUser, allFollower, me };
+module.exports = { followUser, allFollower, profile , me};

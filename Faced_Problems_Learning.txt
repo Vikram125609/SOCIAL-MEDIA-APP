@@ -1,0 +1,7 @@
+Date : 6-March-2023
+So here my nodejs server crashes due to some becoz of not geting the token
+but it is stored in the local storage but due to some reason unable to send it 
+but here i came to know that i have to restart the server after every crash so 
+right now handling that only
+
+🔗 https://blog.heroku.com/best-practices-nodejs-errors

@@ -37,7 +37,7 @@ const Navbar = () => {
                                 endAdornment: <InputAdornment position="end"> <SearchIcon />  </InputAdornment>,
                             }} />
                         </Stack>
-                        <Stack direction="row" spacing={3}>
+                        <Stack direction="row" spacing={6}>
                             <Link to="/home" >
                                 <IconButton
                                     style={{ color: `${iconColor}` }}
@@ -56,7 +56,7 @@ const Navbar = () => {
                                     <PeopleIcon fontSize="large" />
                                 </IconButton>
                             </Link>
-                            <Link to="/home" >
+                            <Link to="/post" >
                                 <IconButton
                                     style={{ color: `${iconColor}` }}
                                     size="large"
@@ -83,7 +83,7 @@ const Navbar = () => {
                                     <NotificationsIcon fontSize="large" />
                                 </IconButton>
                             </Link>
-                            <Link to="/user" >
+                            <Link to={"/profile/" + localStorage.getItem('_id')} >
                                 <IconButton
                                     style={{ color: `${iconColor}` }}
                                     size="large"
