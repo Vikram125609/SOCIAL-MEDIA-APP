@@ -7,6 +7,7 @@ import Home from './Components/Home/Home';
 import Navigation from './Components/Navigation/Navbar';
 import SignUp from './Components/Signup/Signup';
 import Post from './Components/Post/Post';
+import Profile from './Components/Profile/Profile';
 const App = () => {
   return (
     <>
@@ -17,6 +18,7 @@ const App = () => {
         <Route path="/user" exact element={<User />} />
         <Route path="/post" exact element={<Post />} />
         <Route path="/signup" exact element={<SignUp />} />
+        <Route path="/profile/:id" exact element={<Profile />} />
       </Routes>
     </>
   );

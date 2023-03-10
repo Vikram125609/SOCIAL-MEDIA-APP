@@ -83,7 +83,7 @@ const Navbar = () => {
                                     <NotificationsIcon fontSize="large" />
                                 </IconButton>
                             </Link>
-                            <Link to="/user" >
+                            <Link to={"/profile/" + localStorage.getItem('_id')} >
                                 <IconButton
                                     style={{ color: `${iconColor}` }}
                                     size="large"
