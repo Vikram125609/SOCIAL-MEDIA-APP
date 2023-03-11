@@ -18,7 +18,6 @@ const followUser = catchAsync(async (req, res, next) => {
         }
     }, { new: true }
     );
-    console.log(user)
     return sendSuccess(res, 200, 'follow user', user)
 });
 
@@ -43,8 +42,9 @@ const me = catchAsync(async (req, res, next) => {
 });
 
 const profile = catchAsync(async (req, res, next) => {
+    // yaha par you have to select the id from the param becoz consider the case 
+    // when user wants to see other users profile
     const { id } = req.params;
-    console.log("here will be the follower data sortly");
     const followers = await Follow.aggregate([
         {
             $match: { "follow_id": mongoose.Types.ObjectId(id) }
@@ -71,9 +71,12 @@ const profile = catchAsync(async (req, res, next) => {
             }
         }
     ])
+    const followingId = await User.findById(id).select('follow_user');
+    const following = await User.find({ _id: { $in: followingId.follow_user } }).select(' _id first_name last_name image block_user follow_user');
     const finalResponse = {
-        followers: followers
+        followers: followers,
+        following: following
     }
     return sendSuccess(res, 200, 'userdetail', finalResponse)
 })
-module.exports = { followUser, allFollower, profile , me};
+module.exports = { followUser, allFollower, profile, me };

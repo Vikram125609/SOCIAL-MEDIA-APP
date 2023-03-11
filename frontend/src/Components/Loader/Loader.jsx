@@ -1,12 +1,13 @@
-import React from "react";
+import * as React from 'react';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
+// import React from "react";
 import "./Loader.css";
 const Loader = () => {
     return (
-        <div>
-            <div className="loading">
-                <div className="loading-spinner"></div>
-            </div>
-        </div>
+        <Box className='loading' sx={{ display: 'flex' }}>
+            <CircularProgress />
+        </Box>
 
 
     );
