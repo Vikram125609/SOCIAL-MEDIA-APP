@@ -45,6 +45,7 @@ const profile = catchAsync(async (req, res, next) => {
     // yaha par you have to select the id from the param becoz consider the case 
     // when user wants to see other users profile
     const { id } = req.params;
+    console.log(id)
     const followers = await Follow.aggregate([
         {
             $match: { "follow_id": mongoose.Types.ObjectId(id) }
@@ -73,9 +74,11 @@ const profile = catchAsync(async (req, res, next) => {
     ])
     const followingId = await User.findById(id).select('follow_user');
     const following = await User.find({ _id: { $in: followingId.follow_user } }).select(' _id first_name last_name image block_user follow_user');
+    const user = await User.findById(id);
     const finalResponse = {
         followers: followers,
-        following: following
+        following: following,
+        user: user
     }
     return sendSuccess(res, 200, 'userdetail', finalResponse)
 })

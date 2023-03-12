@@ -14,6 +14,9 @@ const coverImageHeight = "50vh";
 const color = 'secondary';
 const Profile = () => {
     const [alignment, setAlignment] = useState('Following');
+    const [user, setUser] = useState();
+    const urlParams = window.location.pathname;
+    const id = urlParams.split('/').pop();
     const [follower, setFollower] = useState([]);
     const [following, setFollowing] = useState([]);
     const [countFollower, setCountFollower] = useState();
@@ -24,7 +27,7 @@ const Profile = () => {
     const profileData = async () => {
         try {
             const data = {
-                id: localStorage.getItem('_id'),
+                id: id,
                 content: 'profile'
             }
             setLoading(true);
@@ -34,6 +37,7 @@ const Profile = () => {
             setCountFollower(profileData?.data?.data?.followers.length)
             setFollowing(profileData?.data?.data?.following);
             setCountFollowing(profileData?.data?.data?.following.length)
+            setUser(profileData?.data?.data?.user);
         } catch (error) {
             console.log(error);
         }
@@ -47,7 +51,7 @@ const Profile = () => {
     useEffect(() => {
         console.log('This will be executed after every time component render')
         profileData();
-    }, []);
+    }, [id]);
     return (
         <>
             {loading ? (<Loader />) : (<Box sx={{ display: 'flex' }} my={marginTop}>
@@ -63,8 +67,8 @@ const Profile = () => {
                             borderRadius: "10px"
                         }} />
                     <Stack direction='row' margin='140px 0px 0px 0px' spacing={2}>
-                        <Avatar onClick={imageClicked} sx={{ height: 200, width: 200, position: 'absolute', zIndex: 1, top: '50vh', }} src={localStorage.getItem('image')} />
-                        <h4>{localStorage.getItem('first_name') + ' ' + localStorage.getItem('last_name')[0]}</h4>
+                        <Avatar onClick={imageClicked} sx={{ height: 200, width: 200, position: 'absolute', zIndex: 1, top: '50vh', }} src={user.image} />
+                        <h4>{user.first_name + ' ' + user.last_name}</h4>
                         <Button color='secondary' variant='outlined'>Followers {countFollower}</Button>
                         <Button color='secondary' variant='outlined'>Post {countPost} </Button>
                         <Button color='secondary' variant='outlined'>Following {countFollowing}</Button>
