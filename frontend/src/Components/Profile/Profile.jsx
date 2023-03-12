@@ -8,6 +8,7 @@ import Divider from '@mui/material/Divider';
 import Users from './Users';
 import candles from './cover.jpeg';
 import Message from './Message';
+import { useNavigate } from 'react-router-dom';
 const marginTop = 1;
 const coverImageHeight = "50vh";
 const color = 'secondary';
@@ -19,6 +20,7 @@ const Profile = () => {
     const [countFollowing, setCountFollowing] = useState();
     const [countPost, setCountPost] = useState(0);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
     const profileData = async () => {
         try {
             const data = {
@@ -39,6 +41,9 @@ const Profile = () => {
     const handleChange = (event, newAlignment) => {
         setAlignment(newAlignment);
     };
+    const imageClicked = (e) => {
+        window.open(e.target.src);
+    }
     useEffect(() => {
         console.log('This will be executed after every time component render')
         profileData();
@@ -46,7 +51,7 @@ const Profile = () => {
     return (
         <>
             {loading ? (<Loader />) : (<Box sx={{ display: 'flex' }} my={marginTop}>
-                <Stack sx={{ flex: 2 }}>
+                <Stack sx={{ flex: 2, mx: '10px' }}>
                     <Box
                         className="candles"
                         sx={{
@@ -58,7 +63,7 @@ const Profile = () => {
                             borderRadius: "10px"
                         }} />
                     <Stack direction='row' margin='140px 0px 0px 0px' spacing={2}>
-                        <Avatar sx={{ height: 200, width: 200, position: 'absolute', zIndex: 1, top: '50vh', }} src={localStorage.getItem('image')} />
+                        <Avatar onClick={imageClicked} sx={{ height: 200, width: 200, position: 'absolute', zIndex: 1, top: '50vh', }} src={localStorage.getItem('image')} />
                         <h4>{localStorage.getItem('first_name') + ' ' + localStorage.getItem('last_name')[0]}</h4>
                         <Button color='secondary' variant='outlined'>Followers {countFollower}</Button>
                         <Button color='secondary' variant='outlined'>Post {countPost} </Button>
@@ -83,7 +88,7 @@ const Profile = () => {
                     }
                 </Stack>
                 <hr />
-                <Stack sx={{ flex: 1, display: 'flex', flexDirection: 'column', height: '100vh', justifyContent: 'flex-start' }}>
+                <Stack sx={{ flex: 1, display: 'flex', flexDirection: 'column', height: '100vh', justifyContent: 'flex-start', mx: '10px' }}>
                     <Message data={following} />
                 </Stack>
             </Box>)}
