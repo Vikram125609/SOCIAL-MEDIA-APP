@@ -7,7 +7,7 @@ const Users = (props) => {
         window.open(e.target.src);
     }
     const { content, data } = props;
-    if (content != 'Followers' && content != 'Following') {
+    if (content != 'Followers' && content != 'Following' && content != 'Friends') {
         return;
     }
     else {
@@ -16,7 +16,7 @@ const Users = (props) => {
                 {
                     data.map((data) => {
                         return (
-                            <Link style={{ textDecoration: 'none' }} to={"/profile/" + data._id} >
+                            <Link key={data._id} style={{ textDecoration: 'none' }} to={"/profile/" + data._id} >
                                 <Box sx={{ display: 'flex', padding: '10px', margin: '10px 0px 10px 0px', borderRadius: '10px', justifyContent: 'space-between', alignItems: 'center', boxShadow: '0px 0px 10px 0px rgba(0,0,0,0.43)' }} key={data._id}>
                                     <Avatar onClick={imageClicked} sx={{ height: 100, width: 100, border: '1px solid black' }} src={data.image} />
                                     <Typography color='secondary' variant='body1'>{data.first_name}</Typography>

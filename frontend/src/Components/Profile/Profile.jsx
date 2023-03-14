@@ -19,8 +19,10 @@ const Profile = () => {
     const id = urlParams.split('/').pop();
     const [follower, setFollower] = useState([]);
     const [following, setFollowing] = useState([]);
+    const [friends, setFriends] = useState([]);
     const [countFollower, setCountFollower] = useState();
     const [countFollowing, setCountFollowing] = useState();
+    const [countFriends, setCountFriends] = useState();
     const [countPost, setCountPost] = useState(0);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
@@ -34,9 +36,11 @@ const Profile = () => {
             const profileData = await profile(data);
             setLoading(false);
             setFollower(profileData?.data?.data?.followers);
-            setCountFollower(profileData?.data?.data?.followers.length)
+            setCountFollower(profileData?.data?.data?.followers.length);
             setFollowing(profileData?.data?.data?.following);
-            setCountFollowing(profileData?.data?.data?.following.length)
+            setCountFollowing(profileData?.data?.data?.following.length);
+            setFriends(profileData?.data?.data?.friends);
+            setCountFriends(profileData?.data?.data?.friends.length);
             setUser(profileData?.data?.data?.user);
         } catch (error) {
             console.log(error);
@@ -85,10 +89,16 @@ const Profile = () => {
                         <ToggleButton color={color} sx={{ flex: 1 }} value="Followers">Followers</ToggleButton>
                         <ToggleButton color={color} sx={{ flex: 1 }} value="Post">Post</ToggleButton>
                         <ToggleButton color={color} sx={{ flex: 1 }} value="Following">Following</ToggleButton>
+                        <ToggleButton color={color} sx={{ flex: 1 }} value="Friends">Friends</ToggleButton>
                     </ToggleButtonGroup>
                     {
-                        alignment === 'Followers' ? (<Users content={alignment} data={follower} />
-                        ) : (<Users content={alignment} data={following} />)
+                        alignment === 'Followers' && <Users content={alignment} data={follower} />
+                    }
+                    {
+                        alignment === 'Following' && <Users content={alignment} data={following} />
+                    }
+                    {
+                        alignment === 'Friends' && <Users content={alignment} data={friends} />
                     }
                 </Stack>
                 <hr />
