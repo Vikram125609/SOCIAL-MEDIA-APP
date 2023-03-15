@@ -76,6 +76,7 @@ const Profile = () => {
                         <Button color='secondary' variant='outlined'>Followers {countFollower}</Button>
                         <Button color='secondary' variant='outlined'>Post {countPost} </Button>
                         <Button color='secondary' variant='outlined'>Following {countFollowing}</Button>
+                        <Button color='secondary' variant='outlined'>Friends {countFriends}</Button>
                     </Stack>
 
                     <ToggleButtonGroup
