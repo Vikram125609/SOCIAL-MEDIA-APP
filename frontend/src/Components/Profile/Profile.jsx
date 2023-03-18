@@ -6,9 +6,12 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Divider from '@mui/material/Divider';
 import Users from './Users';
-import candles from './cover.jpeg';
 import Message from './Message';
 import { useNavigate } from 'react-router-dom';
+// importing CSS
+import './Message.css'
+import './User.css'
+// Constants
 const marginTop = 1;
 const coverImageHeight = "50vh";
 const color = 'secondary';
@@ -59,26 +62,16 @@ const Profile = () => {
     return (
         <>
             {loading ? (<Loader />) : (<Box sx={{ display: 'flex' }} my={marginTop}>
-                <Stack sx={{ flex: 2, mx: '10px' }}>
-                    <Box
-                        className="candles"
-                        sx={{
-                            backgroundImage: `url(${candles})`,
-                            backgroundSize: "cover",
-                            height: `${coverImageHeight}`,
-                            position: 'relative',
-                            color: "#f5f5f5",
-                            borderRadius: "10px"
-                        }} />
-                    <Stack direction='row' margin='140px 0px 0px 0px' spacing={2}>
-                        <Avatar onClick={imageClicked} sx={{ height: 200, width: 200, position: 'absolute', zIndex: 1, top: '50vh', }} src={user.image} />
+                <Stack className='userDataContainer' sx={{ flex: 2, mx: '10px' }}>
+                    <Box />
+                    <Avatar onClick={imageClicked} sx={{ height: 200, width: 200 }} src={user.image} />
+                    <Stack sx={{ justifyContent: 'space-around' }} direction='row' margin='1em 0px 0px 0px' spacing={2}>
                         <h4>{user.first_name + ' ' + user.last_name}</h4>
                         <Button color='secondary' variant='outlined'>Followers {countFollower}</Button>
                         <Button color='secondary' variant='outlined'>Post {countPost} </Button>
                         <Button color='secondary' variant='outlined'>Following {countFollowing}</Button>
                         <Button color='secondary' variant='outlined'>Friends {countFriends}</Button>
                     </Stack>
-
                     <ToggleButtonGroup
                         color="primary"
                         value={alignment}
@@ -103,7 +96,8 @@ const Profile = () => {
                     }
                 </Stack>
                 <hr />
-                <Stack sx={{ flex: 1, display: 'flex', flexDirection: 'column', height: '100vh', justifyContent: 'flex-start', mx: '10px' }}>
+                <Stack className='messageUserContainer' sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', mx: '10px' }}>
+                    <Message data={following} />
                     <Message data={following} />
                 </Stack>
             </Box>)}

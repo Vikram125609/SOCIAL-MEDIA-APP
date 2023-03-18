@@ -1,0 +1,8 @@
+.messageUserContainer {
+  height: calc(100vh - 64px);
+  overflow: auto;
+
+}
+.messageUserContainer::-webkit-scrollbar {
+  display: none;
+}
