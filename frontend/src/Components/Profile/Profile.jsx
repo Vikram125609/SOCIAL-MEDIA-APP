@@ -1,14 +1,19 @@
-import { Avatar, Stack, Box, Container, Typography, Button } from '@mui/material';
+import { Avatar, Stack, Box, Container, Typography, Button, TextField, InputAdornment } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { profile } from '../../Api/Api';
 import Loader from '../Loader/Loader';
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Divider from '@mui/material/Divider';
 import Users from './Users';
 import Message from './Message';
 import { useNavigate } from 'react-router-dom';
-// importing CSS
+// importing icons 
+import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
+import VideoCallIcon from '@mui/icons-material/VideoCall';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import SendIcon from '@mui/icons-material/Send';
+import CloseIcon from '@mui/icons-material/Close';
+// importing css
 import './Message.css'
 import './User.css'
 // Constants
@@ -108,10 +113,17 @@ const Profile = () => {
                 <Stack className='messageUserContainer' sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', mx: '10px' }}>
                     <Message data={following} showHide={showHideMessageChatContainer} getData={setData} />
                 </Stack>
-                <Stack sx={{ visibility: visibility }} className='messageChatContainer'>
-                    <Avatar sx={{ height: 50, width: 50 }} src={messageUser.image} />
-                    <Typography>{messageUser.first_name}</Typography>
-                    <Typography>{messageUser.last_name}</Typography>
+                <Stack sx={{ visibility: visibility }} justifyContent='space-between' className='messageChatContainer' >
+                    <Stack direction='row' justifyContent='space-around' alignItems='center'>
+                        <Avatar sx={{ height: 50, width: 50 }} src={messageUser.image} />
+                        <Typography>{messageUser.first_name + ' ' + messageUser.last_name}</Typography>
+                        <LocalPhoneIcon />
+                        <VideoCallIcon />
+                        <CloseIcon />
+                    </Stack>
+                    <TextField id="outlined-basic" label="Message" variant="outlined" InputProps={{
+                        endAdornment: <InputAdornment position="end"> <SendIcon />  </InputAdornment>,
+                    }} />
                 </Stack>
             </Box>)}
         </>
