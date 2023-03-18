@@ -28,6 +28,8 @@ const Profile = () => {
     const [countFriends, setCountFriends] = useState();
     const [countPost, setCountPost] = useState(0);
     const [loading, setLoading] = useState(true);
+    const [visibility, setVisibility] = useState('hidden')
+    const [messageUser, setMessageUser] = useState({});
     const navigate = useNavigate();
     const profileData = async () => {
         try {
@@ -54,6 +56,13 @@ const Profile = () => {
     };
     const imageClicked = (e) => {
         window.open(e.target.src);
+    }
+    const showHideMessageChatContainer = () => {
+        if (visibility == 'visible') setVisibility('hidden');
+        else setVisibility('visible');
+    }
+    const setData = (data) => {
+        setMessageUser(data);
     }
     useEffect(() => {
         console.log('This will be executed after every time component render')
@@ -97,8 +106,12 @@ const Profile = () => {
                 </Stack>
                 <hr />
                 <Stack className='messageUserContainer' sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', mx: '10px' }}>
-                    <Message data={following} />
-                    <Message data={following} />
+                    <Message data={following} showHide={showHideMessageChatContainer} getData={setData} />
+                </Stack>
+                <Stack sx={{ visibility: visibility }} className='messageChatContainer'>
+                    <Avatar sx={{ height: 50, width: 50 }} src={messageUser.image} />
+                    <Typography>{messageUser.first_name}</Typography>
+                    <Typography>{messageUser.last_name}</Typography>
                 </Stack>
             </Box>)}
         </>
