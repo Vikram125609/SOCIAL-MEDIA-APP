@@ -2,7 +2,7 @@ const { sendSuccess } = require("../utils/apiResponse");
 const catchAsync = require("../utils/catchAsync");
 const Follow = require('../models/followModel');
 const User = require('../models/userModel');
-const { default: mongoose } = require("mongoose");
+const { default: mongoose, mongo } = require("mongoose");
 
 const followUser = catchAsync(async (req, res, next) => {
     const follow_id = req.params.id;
@@ -45,7 +45,6 @@ const profile = catchAsync(async (req, res, next) => {
     // yaha par you have to select the id from the param becoz consider the case 
     // when user wants to see other users profile
     const { id } = req.params;
-    console.log(id)
     const followers = await Follow.aggregate([
         {
             $match: { "follow_id": mongoose.Types.ObjectId(id) }
@@ -74,12 +73,37 @@ const profile = catchAsync(async (req, res, next) => {
     ])
     const followingId = await User.findById(id).select('follow_user');
     const following = await User.find({ _id: { $in: followingId.follow_user } }).select(' _id first_name last_name image block_user follow_user');
+
     const user = await User.findById(id);
+
+    const followAndfollower = await Follow.find({ $or: [{ "follow_id": id }, { "user_id": id }] });
+
+    let friendsIds = [];
+    
+    for (let i = 0; i < followAndfollower.length - 1; i++) {
+        let user_id = followAndfollower[i].user_id.toString();
+        let follow_id = followAndfollower[i].follow_id.toString();
+        for (let j = i + 1; j < followAndfollower.length; j++) {
+            if (user_id == followAndfollower[j].follow_id.toString() && follow_id == followAndfollower[j].user_id.toString()) {
+                if (user_id == id) {
+                    friendsIds.push(follow_id);
+                }
+                else {
+                    friendsIds.push(user_id);
+                }
+            }
+        }
+    }
+
+    const friends = await User.find({ _id: { $in: friendsIds } }).select('_id first_name last_name image block_user follow_user');
+
     const finalResponse = {
         followers: followers,
         following: following,
+        friends: friends,
         user: user
     }
+
     return sendSuccess(res, 200, 'userdetail', finalResponse)
 })
 module.exports = { followUser, allFollower, profile, me };

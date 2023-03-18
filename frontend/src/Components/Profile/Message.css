@@ -1,0 +1,16 @@
+.messageUserContainer {
+  height: calc(100vh - 64px);
+  overflow: auto;
+}
+.messageUserContainer::-webkit-scrollbar {
+  display: none;
+}
+.messageChatContainer {
+  position: absolute;
+  height: calc(100vh - 64px);
+  overflow: auto;
+  left: 32em;
+  width: 25em;
+  border-radius: 5px;
+  background-color: rgb(220, 209, 209);
+}
