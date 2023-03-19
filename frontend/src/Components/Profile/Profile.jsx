@@ -63,8 +63,7 @@ const Profile = () => {
         window.open(e.target.src);
     }
     const showHideMessageChatContainer = () => {
-        if (visibility == 'visible') setVisibility('hidden');
-        else setVisibility('visible');
+        setVisibility('visible');
     }
     const setData = (data) => {
         setMessageUser(data);
@@ -119,7 +118,7 @@ const Profile = () => {
                         <Typography>{messageUser.first_name + ' ' + messageUser.last_name}</Typography>
                         <LocalPhoneIcon />
                         <VideoCallIcon />
-                        <CloseIcon />
+                        <CloseIcon sx={{ cursor: 'pointer' }} onClick={() => setVisibility('hidden')} />
                     </Stack>
                     <TextField id="outlined-basic" label="Message" variant="outlined" InputProps={{
                         endAdornment: <InputAdornment position="end"> <SendIcon />  </InputAdornment>,
