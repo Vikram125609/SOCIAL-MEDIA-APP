@@ -14,3 +14,4 @@ export const user = (data) => API.get(`/me/${data._id}`);
 export const posts = () => API.get('/feed');
 export const allUsers = () => API.get('/allusers');
 export const profile = (data) => API.get(`profile/${data.id}`)
+export const userFriends = () => API.get('/friends');

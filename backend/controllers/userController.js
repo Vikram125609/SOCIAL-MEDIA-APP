@@ -79,7 +79,7 @@ const profile = catchAsync(async (req, res, next) => {
     const followAndfollower = await Follow.find({ $or: [{ "follow_id": id }, { "user_id": id }] });
 
     let friendsIds = [];
-    
+
     for (let i = 0; i < followAndfollower.length - 1; i++) {
         let user_id = followAndfollower[i].user_id.toString();
         let follow_id = followAndfollower[i].follow_id.toString();
@@ -106,4 +106,30 @@ const profile = catchAsync(async (req, res, next) => {
 
     return sendSuccess(res, 200, 'userdetail', finalResponse)
 })
-module.exports = { followUser, allFollower, profile, me };
+const friends = catchAsync(async (req, res, next) => {
+    const { _id } = req.user;
+    const followAndfollower = await Follow.find({ $or: [{ "follow_id": _id }, { "user_id": _id }] });
+    let friendsIds = [];
+
+    for (let i = 0; i < followAndfollower.length - 1; i++) {
+        let user_id = followAndfollower[i].user_id.toString();
+        let follow_id = followAndfollower[i].follow_id.toString();
+        for (let j = i + 1; j < followAndfollower.length; j++) {
+            if (user_id == followAndfollower[j].follow_id.toString() && follow_id == followAndfollower[j].user_id.toString()) {
+                if (user_id == _id) {
+                    friendsIds.push(follow_id);
+                }
+                else {
+                    friendsIds.push(user_id);
+                }
+            }
+        }
+    }
+    const friends = await User.find({ _id: { $in: friendsIds } }).select('_id first_name last_name image block_user follow_user');
+    const finalResponse = {
+        friends: friends,
+    }
+    return sendSuccess(res, 200, 'userdetail', finalResponse);
+
+})
+module.exports = { followUser, allFollower, profile, me, friends };

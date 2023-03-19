@@ -1,6 +1,8 @@
 import { Avatar, Stack, Box, Container, Typography, Button, TextField, InputAdornment } from '@mui/material';
 import { useState, useEffect } from 'react';
+// importing Api's
 import { profile } from '../../Api/Api';
+import { userFriends } from '../../Api/Api';
 import Loader from '../Loader/Loader';
 import Divider from '@mui/material/Divider';
 import Users from './Users';
@@ -32,9 +34,10 @@ const Profile = () => {
     const [countFollowing, setCountFollowing] = useState();
     const [countFriends, setCountFriends] = useState();
     const [countPost, setCountPost] = useState(0);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [visibility, setVisibility] = useState('hidden')
     const [messageUser, setMessageUser] = useState({});
+    const [selfFriendsData, setSelfFriendsData] = useState([]);
     const navigate = useNavigate();
     const profileData = async () => {
         try {
@@ -56,6 +59,10 @@ const Profile = () => {
             console.log(error);
         }
     }
+    const userFriendsData = async () => {
+        const friendsData = await userFriends();
+        setSelfFriendsData(friendsData?.data?.data?.friends);
+    }
     const handleChange = (event, newAlignment) => {
         setAlignment(newAlignment);
     };
@@ -69,6 +76,10 @@ const Profile = () => {
         setMessageUser(data);
     }
     useEffect(() => {
+        // Only for the mounting phase not required to get the friends data baar baar on visiting to each other user profile
+        userFriendsData();
+    }, []);
+    useEffect(() => {
         console.log('This will be executed after every time component render')
         profileData();
     }, [id]);
@@ -77,9 +88,9 @@ const Profile = () => {
             {loading ? (<Loader />) : (<Box sx={{ display: 'flex' }} my={marginTop}>
                 <Stack className='userDataContainer' sx={{ flex: 2, mx: '10px' }}>
                     <Box />
-                    <Avatar onClick={imageClicked} sx={{ height: 200, width: 200 }} src={user.image} />
+                    <Avatar onClick={imageClicked} sx={{ height: 200, width: 200 }} src={user?.image} />
                     <Stack sx={{ justifyContent: 'space-around' }} direction='row' margin='1em 0px 0px 0px' spacing={2}>
-                        <h4>{user.first_name + ' ' + user.last_name}</h4>
+                        <h4>{user?.first_name + ' ' + user?.last_name}</h4>
                         <Button color='secondary' variant='outlined'>Followers {countFollower}</Button>
                         <Button color='secondary' variant='outlined'>Post {countPost} </Button>
                         <Button color='secondary' variant='outlined'>Following {countFollowing}</Button>
@@ -110,12 +121,12 @@ const Profile = () => {
                 </Stack>
                 <hr />
                 <Stack className='messageUserContainer' sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', mx: '10px' }}>
-                    <Message data={following} showHide={showHideMessageChatContainer} getData={setData} />
+                    <Message data={selfFriendsData} showHide={showHideMessageChatContainer} getData={setData} />
                 </Stack>
                 <Stack sx={{ visibility: visibility }} justifyContent='space-between' className='messageChatContainer' >
                     <Stack direction='row' justifyContent='space-around' alignItems='center'>
-                        <Avatar sx={{ height: 50, width: 50 }} src={messageUser.image} />
-                        <Typography>{messageUser.first_name + ' ' + messageUser.last_name}</Typography>
+                        <Avatar sx={{ height: 50, width: 50 }} src={messageUser?.image} />
+                        <Typography>{messageUser?.first_name + ' ' + messageUser?.last_name}</Typography>
                         <LocalPhoneIcon />
                         <VideoCallIcon />
                         <CloseIcon sx={{ cursor: 'pointer' }} onClick={() => setVisibility('hidden')} />
