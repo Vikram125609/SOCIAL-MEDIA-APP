@@ -1,10 +1,14 @@
+import { Avatar, Box, Button, Divider, Typography, Stack } from "@mui/material";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { posts, user } from "../../Api/Api";
-import Feed  from "../Feed/Feed"
+import Post from "./Post"
 import Loader from "../Loader/Loader";
 import "./Home.css"
+
+// Constants
+const marginTop = 1;
 
 const Home = () => {
     const [loading, setLoading] = useState(false);
@@ -49,11 +53,18 @@ const Home = () => {
         <div className="homeContainer">
             {
                 loading ? (<Loader />) : (
-                    <div>
-                        <Feed />
-                        <Feed />
-                        <Feed />
-                    </div>
+                    <Box sx={{ display: 'flex' }} my={marginTop}>
+                        <Stack flex={1} sx={{ backgroundColor: 'red', mx: '10px' }}>
+                            <div>
+                                <h1>PROFILE DATA</h1>
+                            </div>
+                        </Stack>
+                        <Stack spacing={2} direction='column' flex={2}>
+                            <Post />
+                            <Post />
+                            <Post />
+                        </Stack>
+                    </Box>
                 )
             }
         </div>
