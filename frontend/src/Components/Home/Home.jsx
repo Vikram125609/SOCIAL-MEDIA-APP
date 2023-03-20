@@ -3,9 +3,14 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { posts, user } from "../../Api/Api";
+
+// Importing css Files
+import "./Home.css"
+
+// Importing Components
+import Createpost from "./Createpost";
 import Post from "./Post"
 import Loader from "../Loader/Loader";
-import "./Home.css"
 
 // Constants
 const marginTop = 1;
@@ -54,12 +59,13 @@ const Home = () => {
             {
                 loading ? (<Loader />) : (
                     <Box sx={{ display: 'flex' }} my={marginTop}>
-                        <Stack flex={1} sx={{ backgroundColor: 'red', mx: '10px' }}>
+                        <Stack flex={1} sx={{ mx: '10px' }}>
                             <div>
                                 <h1>PROFILE DATA</h1>
                             </div>
                         </Stack>
                         <Stack spacing={2} direction='column' flex={2}>
+                            <Createpost />
                             <Post />
                             <Post />
                             <Post />
