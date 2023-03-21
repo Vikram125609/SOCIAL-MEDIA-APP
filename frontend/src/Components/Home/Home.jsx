@@ -14,11 +14,13 @@ import Loader from "../Loader/Loader";
 
 // Constants
 const marginTop = 1;
-
+const postContainerBoxShadow = '0px 0px 5px 0px rgba(0,0,0,0.43)'
+const postContainerBorderRadius = '10px'
 const Home = () => {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const [userdata, setUserdata] = useState();
+    const [display, setDisplay] = useState('none');
     const me = async () => {
         const body = {
             token: localStorage.getItem('token'),
@@ -45,6 +47,14 @@ const Home = () => {
             console.log(error);
         }
     }
+    const handelPopupDisplay = () => {
+        if (display == 'none') {
+            setDisplay('block')
+        }
+        else {
+            setDisplay('none')
+        }
+    }
     useEffect(() => {
         if (localStorage.getItem('token') === null) {
             navigate('/')
@@ -65,7 +75,16 @@ const Home = () => {
                             </div>
                         </Stack>
                         <Stack spacing={2} direction='column' flex={2}>
-                            <Createpost />
+                            <Createpost handelPopupDisplay={handelPopupDisplay} />
+                            <Box display={display}>
+                                <Stack spacing={2} direction='column' flex={2} sx={{ mx: '10px', p: '10px', borderRadius: postContainerBorderRadius, boxShadow: postContainerBoxShadow }}>
+                                    <textarea placeholder="Enter Some Discription"></textarea>
+                                    <Stack>
+                                        <img style={{ width: '100%' }} src={localStorage.getItem('image')} alt="" />
+                                    </Stack>
+                                    <Button onClick={handelPopupDisplay} variant="contained">Upload</Button>
+                                </Stack>
+                            </Box>
                             <Post />
                             <Post />
                             <Post />
