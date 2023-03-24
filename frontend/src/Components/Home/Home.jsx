@@ -1,26 +1,26 @@
-import { Avatar, Box, Button, Divider, Typography, Stack } from "@mui/material";
+import { Box,  Stack } from "@mui/material";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { posts, user } from "../../Api/Api";
+import { user } from "../../Api/Api";
 
 // Importing css Files
 import "./Home.css"
 
 // Importing Components
 import Createpost from "./Createpost";
-import Post from "./Post"
+import Feed from "./Feed"
+import Post from "./Post";
 import Loader from "../Loader/Loader";
 
 // Constants
 const marginTop = 1;
-const postContainerBoxShadow = '0px 0px 5px 0px rgba(0,0,0,0.43)'
-const postContainerBorderRadius = '10px'
 const Home = () => {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const [userdata, setUserdata] = useState();
     const [display, setDisplay] = useState('none');
+    const [image, setImage] = useState();
     const me = async () => {
         const body = {
             token: localStorage.getItem('token'),
@@ -39,21 +39,16 @@ const Home = () => {
             console.log(error);
         }
     }
-    const feed = async () => {
-        try {
-            let data = await posts();
-            console.log(data?.data?.data);
-        } catch (error) {
-            console.log(error);
-        }
-    }
     const handelPopupDisplay = () => {
-        if (display == 'none') {
+        if (display === 'none') {
             setDisplay('block')
         }
         else {
             setDisplay('none')
         }
+    }
+    const handelImage = (image) => {
+        setImage(image);
     }
     useEffect(() => {
         if (localStorage.getItem('token') === null) {
@@ -61,7 +56,6 @@ const Home = () => {
         }
         else {
             me();
-            // feed();
         }
     }, [])
     return (
@@ -75,19 +69,11 @@ const Home = () => {
                             </div>
                         </Stack>
                         <Stack spacing={2} direction='column' flex={2}>
-                            <Createpost handelPopupDisplay={handelPopupDisplay} />
-                            <Box display={display}>
-                                <Stack spacing={2} direction='column' flex={2} sx={{ mx: '10px', p: '10px', borderRadius: postContainerBorderRadius, boxShadow: postContainerBoxShadow }}>
-                                    <textarea placeholder="Enter Some Discription"></textarea>
-                                    <Stack>
-                                        <img style={{ width: '100%' }} src={localStorage.getItem('image')} alt="" />
-                                    </Stack>
-                                    <Button onClick={handelPopupDisplay} variant="contained">Upload</Button>
-                                </Stack>
-                            </Box>
-                            <Post />
-                            <Post />
-                            <Post />
+                            <Createpost handelImage={handelImage} handelPopupDisplay={handelPopupDisplay} />
+                            <Post image={image} handelPopupDisplay={handelPopupDisplay} display={display} />
+                            <Feed />
+                            <Feed />
+                            <Feed />
                         </Stack>
                     </Box>
                 )

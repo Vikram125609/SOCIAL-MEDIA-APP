@@ -1,44 +1,35 @@
-import { Avatar, Box, Button, Divider, Typography, Stack } from "@mui/material";
-// Importing Icons
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import { Box, Button, Stack } from "@mui/material";
 import { useState } from "react";
-const postImageWidth = '50px';
-const postImageHeight = '50px';
+
+// Constants
 const postContainerBorderRadius = '10px'
 const postContainerBoxShadow = '0px 0px 5px 0px rgba(0,0,0,0.43)'
-const time = new Date();
-const Post = () => {
-    const [like, setLike] = useState('outlined');
-    const handelLike = () => {
-        if (like == 'outlined') {
-            setLike('contained');
-        }
-        else {
-            setLike('outlined');
-        }
+const Post = (props) => {
+    const [discription, setDiscription] = useState();
+    const { image, display, handelPopupDisplay } = props;
+    const handelDiscription = (e) => {
+        setDiscription(e.target.value);
+    }
+    const uploadImage = () => {
+        const formData = new FormData();
+        formData.append("discription", discription);
+        formData.append("image", image);
+        console.log(formData);
+        handelPopupDisplay();
     }
     return (
-        <Box>
-            <Stack spacing={2} direction='column' flex={2} sx={{ mx: '10px', p: '10px', borderRadius: postContainerBorderRadius, boxShadow: postContainerBoxShadow }}>
-                <Stack direction='row' alignItems='center' justifyContent='space-around'>
-                    <Avatar sx={{ width: postImageWidth, height: postImageHeight }} src={localStorage.getItem('image')} />
-                    <Divider color='black' width='1px' orientation="vertical" flexItem />
-                    <Typography>{localStorage.getItem('first_name') + ' ' + localStorage.getItem('last_name')}</Typography>
-                    <Divider color='black' width='1px' orientation="vertical" flexItem />
-                    <Typography>{time.getSeconds() + ' ' + 'sec ago'}</Typography>
-                    <Divider color='black' width='1px' orientation="vertical" flexItem />
-                    <Typography color='secondary' >Rama commented on this</Typography>
+        <>
+            <Box display={display}>
+                <Stack spacing={2} direction='column' flex={2} sx={{ mx: '10px', p: '10px', borderRadius: postContainerBorderRadius, boxShadow: postContainerBoxShadow }}>
+                    <textarea onChange={handelDiscription} placeholder="Enter Some Discription" value={discription}></textarea>
+                    <Stack>
+                        <img style={{ width: '100%' }} src={localStorage.getItem('image')} alt="" />
+                    </Stack>
+                    <Button variant="contained" onClick={uploadImage}>Upload</Button>
                 </Stack>
-                <Stack>
-                    <img style={{ width: '100%' }} src={localStorage.getItem('image')} alt="" />
-                </Stack>
-                <Stack direction='row' justifyContent='space-evenly'>
-                    <Button onClick={handelLike} color='secondary' variant={like}>Like</Button>
-                    <Button color='secondary' variant='outlined'>Comment</Button>
-                    <Button color='secondary' variant='outlined'>Share</Button>
-                </Stack>
-            </Stack>
-        </Box>
-    )
-};
-export default Post;
+            </Box>
+        </>
+    );
+}
+
+export default Post
