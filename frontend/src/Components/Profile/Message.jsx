@@ -1,4 +1,5 @@
 import { Avatar, Stack, Box, Container, Typography, Button } from '@mui/material';
+import { io } from '../../socket';
 const Message = (props) => {
     const imageClicked = (e) => {
         window.open(e.target.src);
