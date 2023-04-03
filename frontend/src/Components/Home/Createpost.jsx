@@ -1,7 +1,7 @@
 import { Avatar, Box, Button, Stack, Typography } from "@mui/material";
 
 // Importing Icons
-import { PhotoCamera } from "@material-ui/icons";
+import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import SmartDisplayIcon from '@mui/icons-material/SmartDisplay';
 import ArticleIcon from '@mui/icons-material/Article';
 
@@ -26,7 +26,7 @@ const Createpost = (props) => {
                 </Stack>
                 <Stack spacing={2} justifyContent='space-around' direction='row'>
                     <Stack sx={{ cursor: 'pointer' }} spacing={2} direction='row'>
-                        <Button fullWidth variant="outlined" component="label" endIcon={<PhotoCamera />}>
+                        <Button fullWidth variant="outlined" component="label" endIcon={<PhotoCameraIcon />}>
                             <input hidden accept="image/*" multiple type="file" onChange={setImage} />
                             Photo
                         </Button>
