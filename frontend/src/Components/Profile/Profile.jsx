@@ -1,5 +1,7 @@
 import { Avatar, Stack, Box, Container, Typography, Button, TextField, InputAdornment } from '@mui/material';
 import { useState, useEffect } from 'react';
+// import Socket
+import { socket } from '../../socket';
 // importing Api's
 import { profile } from '../../Api/Api';
 import { userFriends } from '../../Api/Api';
@@ -18,6 +20,7 @@ import CloseIcon from '@mui/icons-material/Close';
 // importing css
 import './Message.css'
 import './User.css'
+import Navbar from '../Navigation/Navbar';
 // Constants
 const marginTop = 1;
 const coverImageHeight = "50vh";
@@ -38,6 +41,8 @@ const Profile = () => {
     const [visibility, setVisibility] = useState('hidden')
     const [messageUser, setMessageUser] = useState({});
     const [selfFriendsData, setSelfFriendsData] = useState([]);
+    const [message, setMessage] = useState('');
+    const [received, setReceived] = useState([]);
     const navigate = useNavigate();
     const profileData = async () => {
         try {
@@ -75,6 +80,12 @@ const Profile = () => {
     const setData = (data) => {
         setMessageUser(data);
     }
+    const sendMessage = () => {
+        socket.emit('sendMessage', message);
+    }
+    const handleMessage = (e) => {
+        setMessage(e.target.value);
+    }
     useEffect(() => {
         // Only for the mounting phase not required to get the friends data baar baar on visiting to each other user profile
         userFriendsData();
@@ -83,8 +94,16 @@ const Profile = () => {
         console.log('This will be executed after every time component render')
         profileData();
     }, [id]);
+    useEffect(() => {
+        socket.on('broadCast', (data) => {
+            setReceived((prevValue) => {
+                return [...prevValue, data]
+            });
+        })
+    }, [])
     return (
         <>
+            <Navbar />
             {loading ? (<Loader />) : (<Box sx={{ display: 'flex' }} my={marginTop}>
                 <Stack className='userDataContainer' sx={{ flex: 2, mx: '10px' }}>
                     <Box />
@@ -131,8 +150,17 @@ const Profile = () => {
                         <VideoCallIcon />
                         <CloseIcon sx={{ cursor: 'pointer' }} onClick={() => setVisibility('hidden')} />
                     </Stack>
-                    <TextField id="outlined-basic" label="Message" variant="outlined" InputProps={{
-                        endAdornment: <InputAdornment position="end"> <SendIcon />  </InputAdornment>,
+                    <Stack sx={{
+                        height: '100%', overflow: 'auto'
+                    }}>
+                        {
+                            received.map((data) => {
+                                return <span>{data}</span>
+                            })
+                        }
+                    </Stack>
+                    <TextField onChange={handleMessage} id="outlined-basic" label="Message" variant="outlined" InputProps={{
+                        endAdornment: <InputAdornment position="end"> <SendIcon onClick={sendMessage} sx={{ cursor: 'pointer' }} />  </InputAdornment>,
                     }} />
                 </Stack>
             </Box>)}

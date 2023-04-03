@@ -11,7 +11,6 @@ import Profile from './Components/Profile/Profile';
 const App = () => {
   return (
     <>
-      <Navigation/>
       <Routes>
         <Route path="/" exact element={<Login />} />
         <Route path="/home" exact element={<Home />} />

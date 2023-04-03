@@ -1,4 +1,4 @@
-import { Box,  Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -7,11 +7,15 @@ import { user } from "../../Api/Api";
 // Importing css Files
 import "./Home.css"
 
+// Imporing Socket
+import { socket } from './../../socket';
+
 // Importing Components
 import Createpost from "./Createpost";
 import Feed from "./Feed"
 import Post from "./Post";
 import Loader from "../Loader/Loader";
+import Navbar from "../Navigation/Navbar";
 
 // Constants
 const marginTop = 1;
@@ -58,8 +62,12 @@ const Home = () => {
             me();
         }
     }, [])
+    useEffect(() => {
+        socket.connect();
+    }, [])
     return (
         <div className="homeContainer">
+            <Navbar />
             {
                 loading ? (<Loader />) : (
                     <Box sx={{ display: 'flex' }} my={marginTop}>

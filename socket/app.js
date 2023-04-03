@@ -11,7 +11,14 @@ const io = new Server(server, {
 });
 
 io.on('connection', (socket) => {
-    console.log('A user connected with this socket id', socket.id);
+    console.log('Connected', socket.id);
+    socket.on('sendMessage', (data) => {
+        console.log(data);
+        socket.broadcast.emit('broadCast', data);
+    });
+    socket.on('disconnect', () => {
+        console.log('Disconnected');
+    })
 });
 
 module.exports = server;
