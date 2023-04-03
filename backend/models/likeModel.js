@@ -4,10 +4,15 @@ const likeSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'User'
     },
-    post_id: {
-        type: mongoose.Schema.ObjectId,
-        ref: 'Post'
+    likeType: {
+        type: Number,
+        enum: [1, 2, 3],
+        default: 1,
     }
+    // post_id: {
+    //     type: mongoose.Schema.ObjectId,
+    //     ref: 'Post'
+    // }
 })
 
 const Like = mongoose.model('Like', likeSchema);

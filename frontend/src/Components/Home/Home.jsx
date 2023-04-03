@@ -1,15 +1,26 @@
+import { Box,  Stack } from "@mui/material";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { posts, user } from "../../Api/Api";
-import Feed  from "../Feed/Feed"
-import Loader from "../Loader/Loader";
+import { user } from "../../Api/Api";
+
+// Importing css Files
 import "./Home.css"
 
+// Importing Components
+import Createpost from "./Createpost";
+import Feed from "./Feed"
+import Post from "./Post";
+import Loader from "../Loader/Loader";
+
+// Constants
+const marginTop = 1;
 const Home = () => {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const [userdata, setUserdata] = useState();
+    const [display, setDisplay] = useState('none');
+    const [image, setImage] = useState();
     const me = async () => {
         const body = {
             token: localStorage.getItem('token'),
@@ -28,13 +39,16 @@ const Home = () => {
             console.log(error);
         }
     }
-    const feed = async () => {
-        try {
-            let data = await posts();
-            console.log(data?.data?.data);
-        } catch (error) {
-            console.log(error);
+    const handelPopupDisplay = () => {
+        if (display === 'none') {
+            setDisplay('block')
         }
+        else {
+            setDisplay('none')
+        }
+    }
+    const handelImage = (image) => {
+        setImage(image);
     }
     useEffect(() => {
         if (localStorage.getItem('token') === null) {
@@ -42,18 +56,26 @@ const Home = () => {
         }
         else {
             me();
-            // feed();
         }
     }, [])
     return (
         <div className="homeContainer">
             {
                 loading ? (<Loader />) : (
-                    <div>
-                        <Feed />
-                        <Feed />
-                        <Feed />
-                    </div>
+                    <Box sx={{ display: 'flex' }} my={marginTop}>
+                        <Stack flex={1} sx={{ mx: '10px' }}>
+                            <div>
+                                <h1>PROFILE DATA</h1>
+                            </div>
+                        </Stack>
+                        <Stack spacing={2} direction='column' flex={2}>
+                            <Createpost handelImage={handelImage} handelPopupDisplay={handelPopupDisplay} />
+                            <Post image={image} handelPopupDisplay={handelPopupDisplay} display={display} />
+                            <Feed />
+                            <Feed />
+                            <Feed />
+                        </Stack>
+                    </Box>
                 )
             }
         </div>
