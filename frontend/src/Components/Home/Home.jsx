@@ -65,6 +65,12 @@ const Home = () => {
     useEffect(() => {
         socket.connect();
     }, [])
+    useEffect(() => {
+        socket.emit('getAgainAllConnectedUsers');
+        socket.on('connectedUsers', (data) => {
+            console.log("Home",data);
+        })
+    }, []);
     return (
         <div className="homeContainer">
             <Navbar />

@@ -13,9 +13,20 @@ const io = new Server(server, {
 io.on('connection', (socket) => {
     console.log('Connected', socket.id);
     socket.on('sendMessage', (data) => {
-        console.log(data);
         socket.broadcast.emit('broadCast', data);
     });
+    const users = [];
+    for (let [id, socket] of io.of("/").sockets) {
+        users.push(socket.handshake.query.user_id);
+    }
+    socket.emit('connectedUsers', users);;
+    socket.on('getAgainAllConnectedUsers', () => {
+        const users = [];
+        for (let [id, socket] of io.of("/").sockets) {
+            users.push(socket.handshake.query.user_id);
+        }
+        socket.emit('connectedUsers', users);
+    })
     socket.on('disconnect', () => {
         console.log('Disconnected');
     })

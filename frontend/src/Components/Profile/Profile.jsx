@@ -2,6 +2,9 @@ import { Avatar, Stack, Box, Container, Typography, Button, TextField, InputAdor
 import { useState, useEffect } from 'react';
 // import Socket
 import { socket } from '../../socket';
+// importing Toast
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // importing Api's
 import { profile } from '../../Api/Api';
 import { userFriends } from '../../Api/Api';
@@ -43,6 +46,7 @@ const Profile = () => {
     const [selfFriendsData, setSelfFriendsData] = useState([]);
     const [message, setMessage] = useState('');
     const [received, setReceived] = useState([]);
+    const [connectedUsers, setConnectedUsers] = useState([]);
     const navigate = useNavigate();
     const profileData = async () => {
         try {
@@ -100,7 +104,6 @@ const Profile = () => {
         userFriendsData();
     }, []);
     useEffect(() => {
-        console.log('This will be executed after every time component render')
         profileData();
     }, [id]);
     useEffect(() => {
@@ -111,10 +114,19 @@ const Profile = () => {
                     'position': 'start'
                 }]
             });
+            toast("New Message Received");
+        })
+    }, []);
+    useEffect(() => {
+        // Here I am getting again all connected users
+        socket.emit('getAgainAllConnectedUsers');
+        socket.on('connectedUsers', (data) => {
+            setConnectedUsers(data);
         })
     }, [])
     return (
         <>
+            <ToastContainer />
             <Navbar />
             {loading ? (<Loader />) : (<Box sx={{ display: 'flex' }} my={marginTop}>
                 <Stack className='userDataContainer' sx={{ flex: 2, mx: '10px' }}>
@@ -152,7 +164,7 @@ const Profile = () => {
                 </Stack>
                 <hr />
                 <Stack className='messageUserContainer' sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', mx: '10px' }}>
-                    <Message data={selfFriendsData} showHide={showHideMessageChatContainer} getData={setData} />
+                    <Message connectedUsers={connectedUsers} data={selfFriendsData} showHide={showHideMessageChatContainer} getData={setData} />
                 </Stack>
                 <Stack sx={{ visibility: visibility }} justifyContent='space-between' className='messageChatContainer' >
                     <Stack direction='row' justifyContent='space-around' alignItems='center'>
