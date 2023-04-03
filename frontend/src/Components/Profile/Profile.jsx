@@ -80,8 +80,17 @@ const Profile = () => {
     const setData = (data) => {
         setMessageUser(data);
     }
-    const sendMessage = () => {
-        socket.emit('sendMessage', message);
+    const sendMessage = (e) => {
+        if (e.keyCode === 13) {
+            socket.emit('sendMessage', message);
+            setReceived((prevValue) => {
+                return [...prevValue, {
+                    'message': message,
+                    'position': 'end'
+                }];
+            })
+            setMessage('');
+        }
     }
     const handleMessage = (e) => {
         setMessage(e.target.value);
@@ -95,9 +104,12 @@ const Profile = () => {
         profileData();
     }, [id]);
     useEffect(() => {
-        socket.on('broadCast', (data) => {
+        socket.on('broadCast', (message) => {
             setReceived((prevValue) => {
-                return [...prevValue, data]
+                return [...prevValue, {
+                    'message': message,
+                    'position': 'start'
+                }]
             });
         })
     }, [])
@@ -151,15 +163,19 @@ const Profile = () => {
                         <CloseIcon sx={{ cursor: 'pointer' }} onClick={() => setVisibility('hidden')} />
                     </Stack>
                     <Stack sx={{
-                        height: '100%', overflow: 'auto'
+                        height: '100%', overflow: 'auto', display: 'flex'
                     }}>
                         {
                             received.map((data) => {
-                                return <span>{data}</span>
+                                return (
+                                    <div style={{ display: 'flex', justifyContent: `${data?.position}`, margin: '5px' }}>
+                                        <span style={{}}>{data?.message}</span>
+                                    </div>
+                                )
                             })
                         }
                     </Stack>
-                    <TextField onChange={handleMessage} id="outlined-basic" label="Message" variant="outlined" InputProps={{
+                    <TextField onChange={handleMessage} id="outlined-basic" onKeyUp={sendMessage} label="Message" value={message} variant="outlined" InputProps={{
                         endAdornment: <InputAdornment position="end"> <SendIcon onClick={sendMessage} sx={{ cursor: 'pointer' }} />  </InputAdornment>,
                     }} />
                 </Stack>
