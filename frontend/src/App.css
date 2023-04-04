@@ -1,4 +1,4 @@
-@media (min-width: 1440px) {
+@media (max-width: 1440px) {
   body {
     padding-top: 64px;
     margin: 0px 124px 0px 124px;

@@ -87,6 +87,11 @@ const Profile = () => {
     }
     const sendMessage = (e) => {
         if (e.keyCode === 13) {
+            // socket.emit('privateMessage', {
+            //     message,
+            //     friend_id: messageUser._id,
+            //     my_socket_id: socket.id
+            // })
             socket.emit('sendMessage', message);
             setReceived((prevValue) => {
                 return [...prevValue, {
@@ -179,9 +184,9 @@ const Profile = () => {
                         height: '100%', overflow: 'auto', display: 'flex'
                     }}>
                         {
-                            received.map((data) => {
+                            received.map((data,index) => {
                                 return (
-                                    <div style={{ display: 'flex', justifyContent: `${data?.position}`, margin: '5px' }}>
+                                    <div key={index} style={{ display: 'flex', justifyContent: `${data?.position}`, margin: '5px' }}>
                                         <span style={{}}>{data?.message}</span>
                                     </div>
                                 )

@@ -56,24 +56,6 @@ const Navbar = () => {
                                     <PeopleIcon fontSize="large" />
                                 </IconButton>
                             </Link>
-                            <Link to="/post" >
-                                <IconButton
-                                    style={{ color: `${iconColor}` }}
-                                    size="large"
-                                    edge="start"
-                                    color="inherit">
-                                    <ControlPointOutlinedIcon fontSize="large" />
-                                </IconButton>
-                            </Link>
-                            <Link to="/user" >
-                                <IconButton
-                                    style={{ color: `${iconColor}` }}
-                                    size="large"
-                                    edge="start"
-                                    color="inherit">
-                                    <MessageIcon fontSize="large" />
-                                </IconButton>
-                            </Link>
                             <Link to="/home" >
                                 <IconButton
                                     style={{ color: `${iconColor}` }}
