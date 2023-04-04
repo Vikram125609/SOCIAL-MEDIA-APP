@@ -30,8 +30,12 @@ io.on('connection', (socket) => {
     })
     socket.on('disconnect', () => {
         // Here the io.emit is required because i want to notify all the users without refresh that I got offline
-        io.emit('connectedUsers', users);
         console.log('Disconnected');
+        const users = [];
+        for (let [id, socket] of io.of("/").sockets) {
+            users.push(socket.handshake.query.user_id);
+        }
+        io.emit('connectedUsers', users);
     })
 });
 
