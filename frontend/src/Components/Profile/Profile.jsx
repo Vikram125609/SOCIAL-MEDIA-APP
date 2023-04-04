@@ -23,6 +23,7 @@ import CloseIcon from '@mui/icons-material/Close';
 // importing css
 import './Message.css'
 import './User.css'
+import './Profile.css'
 import Navbar from '../Navigation/Navbar';
 // Constants
 const marginTop = 1;
@@ -174,7 +175,7 @@ const Profile = () => {
                         <VideoCallIcon />
                         <CloseIcon sx={{ cursor: 'pointer' }} onClick={() => setVisibility('hidden')} />
                     </Stack>
-                    <Stack sx={{
+                    <Stack className='sendreceivedMessageUserContainer' sx={{
                         height: '100%', overflow: 'auto', display: 'flex'
                     }}>
                         {
