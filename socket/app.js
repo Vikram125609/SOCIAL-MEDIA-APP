@@ -11,7 +11,32 @@ const io = new Server(server, {
 });
 
 io.on('connection', (socket) => {
-    console.log('A user connected with this socket id', socket.id);
+    console.log('Connected', socket.id);
+    socket.on('sendMessage', (data) => {
+        socket.broadcast.emit('broadCast', data);
+    });
+    const users = [];
+    for (let [id, socket] of io.of("/").sockets) {
+        users.push(socket.handshake.query.user_id);
+    }
+    // Here the io.emit is required because i want to notify all the users without refresh that I am online
+    io.emit('connectedUsers', users);
+    socket.on('getAgainAllConnectedUsers', () => {
+        const users = [];
+        for (let [id, socket] of io.of("/").sockets) {
+            users.push(socket.handshake.query.user_id);
+        }
+        socket.emit('connectedUsers', users);
+    })
+    socket.on('disconnect', () => {
+        // Here the io.emit is required because i want to notify all the users without refresh that I got offline
+        console.log('Disconnected');
+        const users = [];
+        for (let [id, socket] of io.of("/").sockets) {
+            users.push(socket.handshake.query.user_id);
+        }
+        io.emit('connectedUsers', users);
+    })
 });
 
 module.exports = server;

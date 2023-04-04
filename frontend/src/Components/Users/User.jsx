@@ -5,6 +5,7 @@ import { allFollowers, allUsers } from '../../Api/Api';
 import Loader from '../Loader/Loader';
 import Usercard from './Usercard';
 import "./User.css"
+import Navbar from '../Navigation/Navbar';
 const User = () => {
     const [data, setData] = useState([]);
     const [users, setUsers] = useState([]);
@@ -37,6 +38,7 @@ const User = () => {
     }, [])
     return (
         <>
+            <Navbar />
             {
                 loading ? (<Loader />) : (
                     data.map((data, index) => {

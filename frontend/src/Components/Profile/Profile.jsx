@@ -1,5 +1,10 @@
 import { Avatar, Stack, Box, Container, Typography, Button, TextField, InputAdornment } from '@mui/material';
 import { useState, useEffect } from 'react';
+// import Socket
+import { socket } from '../../socket';
+// importing Toast
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // importing Api's
 import { profile } from '../../Api/Api';
 import { userFriends } from '../../Api/Api';
@@ -18,6 +23,7 @@ import CloseIcon from '@mui/icons-material/Close';
 // importing css
 import './Message.css'
 import './User.css'
+import Navbar from '../Navigation/Navbar';
 // Constants
 const marginTop = 1;
 const coverImageHeight = "50vh";
@@ -38,6 +44,9 @@ const Profile = () => {
     const [visibility, setVisibility] = useState('hidden')
     const [messageUser, setMessageUser] = useState({});
     const [selfFriendsData, setSelfFriendsData] = useState([]);
+    const [message, setMessage] = useState('');
+    const [received, setReceived] = useState([]);
+    const [connectedUsers, setConnectedUsers] = useState([]);
     const navigate = useNavigate();
     const profileData = async () => {
         try {
@@ -75,16 +84,50 @@ const Profile = () => {
     const setData = (data) => {
         setMessageUser(data);
     }
+    const sendMessage = (e) => {
+        if (e.keyCode === 13) {
+            socket.emit('sendMessage', message);
+            setReceived((prevValue) => {
+                return [...prevValue, {
+                    'message': message,
+                    'position': 'end'
+                }];
+            })
+            setMessage('');
+        }
+    }
+    const handleMessage = (e) => {
+        setMessage(e.target.value);
+    }
     useEffect(() => {
         // Only for the mounting phase not required to get the friends data baar baar on visiting to each other user profile
         userFriendsData();
     }, []);
     useEffect(() => {
-        console.log('This will be executed after every time component render')
         profileData();
     }, [id]);
+    useEffect(() => {
+        socket.on('broadCast', (message) => {
+            setReceived((prevValue) => {
+                return [...prevValue, {
+                    'message': message,
+                    'position': 'start'
+                }]
+            });
+            toast("New Message Received");
+        })
+    }, []);
+    useEffect(() => {
+        // Here I am getting again all connected users
+        socket.emit('getAgainAllConnectedUsers');
+        socket.on('connectedUsers', (data) => {
+            setConnectedUsers(data);
+        })
+    }, [])
     return (
         <>
+            <ToastContainer />
+            <Navbar />
             {loading ? (<Loader />) : (<Box sx={{ display: 'flex' }} my={marginTop}>
                 <Stack className='userDataContainer' sx={{ flex: 2, mx: '10px' }}>
                     <Box />
@@ -121,7 +164,7 @@ const Profile = () => {
                 </Stack>
                 <hr />
                 <Stack className='messageUserContainer' sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', mx: '10px' }}>
-                    <Message data={selfFriendsData} showHide={showHideMessageChatContainer} getData={setData} />
+                    <Message connectedUsers={connectedUsers} data={selfFriendsData} showHide={showHideMessageChatContainer} getData={setData} />
                 </Stack>
                 <Stack sx={{ visibility: visibility }} justifyContent='space-between' className='messageChatContainer' >
                     <Stack direction='row' justifyContent='space-around' alignItems='center'>
@@ -131,8 +174,21 @@ const Profile = () => {
                         <VideoCallIcon />
                         <CloseIcon sx={{ cursor: 'pointer' }} onClick={() => setVisibility('hidden')} />
                     </Stack>
-                    <TextField id="outlined-basic" label="Message" variant="outlined" InputProps={{
-                        endAdornment: <InputAdornment position="end"> <SendIcon />  </InputAdornment>,
+                    <Stack sx={{
+                        height: '100%', overflow: 'auto', display: 'flex'
+                    }}>
+                        {
+                            received.map((data) => {
+                                return (
+                                    <div style={{ display: 'flex', justifyContent: `${data?.position}`, margin: '5px' }}>
+                                        <span style={{}}>{data?.message}</span>
+                                    </div>
+                                )
+                            })
+                        }
+                    </Stack>
+                    <TextField onChange={handleMessage} id="outlined-basic" onKeyUp={sendMessage} label="Message" value={message} variant="outlined" InputProps={{
+                        endAdornment: <InputAdornment position="end"> <SendIcon onClick={sendMessage} sx={{ cursor: 'pointer' }} />  </InputAdornment>,
                     }} />
                 </Stack>
             </Box>)}

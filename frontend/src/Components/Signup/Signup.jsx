@@ -4,7 +4,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import { PhotoCamera } from '@material-ui/icons';
+import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
@@ -123,7 +123,7 @@ const SignUp = () => {
                                 />
                             </Grid>
                             <Grid item xs={12}>
-                                <Button fullWidth variant="contained" component="label" endIcon={<PhotoCamera />}>
+                                <Button fullWidth variant="contained" component="label" endIcon={<PhotoCameraIcon />}>
                                     Upload
                                     <input hidden accept="image/*" multiple type="file" onChange={e => {
                                         setimage(e.target.files[0]);
