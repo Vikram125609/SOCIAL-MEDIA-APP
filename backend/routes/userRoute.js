@@ -1,5 +1,5 @@
 const express = require('express');
-const { followUser, allFollower, profile, me, friends, createPost, getAllPost } = require('../controllers/userController');
+const { followUser, allFollower, profile, me, friends, createPost, getAllPost, userPost } = require('../controllers/userController');
 const globalAccess = require('../middlewares/auth');
 // const globalAccess = require('../middlewares/auth');
 const { upload } = require('../middlewares/multer');
@@ -11,4 +11,5 @@ router.get("/profile/:id", globalAccess, profile);
 router.get("/friends", globalAccess, friends);
 router.post("/createpost", upload.any(), globalAccess, createPost);
 router.get('/getAllPost', globalAccess, getAllPost);
+router.get('/userPost', globalAccess, userPost);
 module.exports = router;

@@ -1,12 +1,14 @@
 import { Avatar, Stack, Box, Container, Typography, Button, TextField, InputAdornment } from '@mui/material';
 import { useState, useEffect } from 'react';
+// import Components
+import Post from "./Post";
 // import Socket
 import { socket } from '../../socket';
 // importing Toast
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 // importing Api's
-import { profile } from '../../Api/Api';
+import { profile, userPost } from '../../Api/Api';
 import { userFriends } from '../../Api/Api';
 import Loader from '../Loader/Loader';
 import Divider from '@mui/material/Divider';
@@ -48,6 +50,7 @@ const Profile = () => {
     const [message, setMessage] = useState('');
     const [received, setReceived] = useState([]);
     const [connectedUsers, setConnectedUsers] = useState([]);
+    const [userPostData, setUserPostData] = useState([]);
     const navigate = useNavigate();
     const profileData = async () => {
         try {
@@ -78,13 +81,17 @@ const Profile = () => {
     };
     const imageClicked = (e) => {
         window.open(e.target.src);
-    }
+    };
     const showHideMessageChatContainer = () => {
         setVisibility('visible');
-    }
+    };
     const setData = (data) => {
         setMessageUser(data);
-    }
+    };
+    const userPosts = async () => {
+        const data = await userPost();
+        setUserPostData(data?.data?.data?.post);
+    };
     const sendMessage = (e) => {
         if (e.keyCode === 13) {
             socket.emit('privateMessage', {
@@ -111,6 +118,9 @@ const Profile = () => {
     useEffect(() => {
         // Only for the mounting phase not required to get the friends data baar baar on visiting to each other user profile
         userFriendsData();
+    }, []);
+    useEffect(() => {
+        userPosts();
     }, []);
     useEffect(() => {
         profileData();
@@ -170,6 +180,9 @@ const Profile = () => {
                     {
                         alignment === 'Friends' && <Users content={alignment} data={friends} />
                     }
+                    {
+                        alignment === 'Post' && <Post data={userPostData} />
+                    }
                 </Stack>
                 <hr />
                 <Stack className='messageUserContainer' sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', mx: '10px' }}>
@@ -187,7 +200,7 @@ const Profile = () => {
                         height: '100%', overflow: 'auto', display: 'flex'
                     }}>
                         {
-                            received.map((data,index) => {
+                            received.map((data, index) => {
                                 return (
                                     <div key={index} style={{ display: 'flex', justifyContent: `${data?.position}`, margin: '5px' }}>
                                         <span style={{}}>{data?.message}</span>
