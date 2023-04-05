@@ -87,12 +87,12 @@ const Profile = () => {
     }
     const sendMessage = (e) => {
         if (e.keyCode === 13) {
-            // socket.emit('privateMessage', {
-            //     message,
-            //     friend_id: messageUser._id,
-            //     my_socket_id: socket.id
-            // })
-            socket.emit('sendMessage', message);
+            socket.emit('privateMessage', {
+                message,
+                friend_id: messageUser._id,
+                my_socket_id: socket.id
+            })
+            // socket.emit('sendMessage', message);
             setReceived((prevValue) => {
                 return [...prevValue, {
                     'message': message,
@@ -102,6 +102,9 @@ const Profile = () => {
             setMessage('');
         }
     }
+    socket.on('privateMessage', (data) => {
+        console.log(data);
+    })
     const handleMessage = (e) => {
         setMessage(e.target.value);
     }

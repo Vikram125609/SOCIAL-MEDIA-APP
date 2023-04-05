@@ -12,6 +12,7 @@ const io = new Server(server, {
 
 io.on('connection', (socket) => {
     console.log('Connected', socket.id);
+    socket.join(socket.id);
     socket.on('sendMessage', (data) => {
         socket.broadcast.emit('broadCast', data);
     });
@@ -30,15 +31,17 @@ io.on('connection', (socket) => {
     })
     socket.on('privateMessage', (data) => {
         const { message, friend_id, my_socket_id } = data;
-        // const users = [];
-        // for (let [id, socket] of io.of("/").sockets) {
-        //     if (socket.handshake.query.user_id === friend_id) {
-        //         console.log(socket.handshake.query.user_id, friend_id, socket.id);
-        //         socket.join(socket.id);
-        //         socket.to(socket.id).emit('privateMessage', message);
-        //         break;
-        //     }
-        // }
+        const users = [];
+        for (let [id, socket] of io.of("/").sockets) {
+            if (socket.handshake.query.user_id === friend_id) {
+                console.log(socket.handshake.query.user_id, friend_id, socket.id);
+                socket.to(socket.id).emit('privateMessage', {
+                    message,
+                    from: my_socket_id
+                });
+                break;
+            }
+        }
         console.log(message, friend_id, my_socket_id);
         console.log('This is private message', data);
     })

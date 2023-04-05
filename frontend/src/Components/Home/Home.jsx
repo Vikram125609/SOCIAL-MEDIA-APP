@@ -22,9 +22,11 @@ const marginTop = 1;
 const Home = () => {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const [mounting, setMounting] = useState(true);
     const [userdata, setUserdata] = useState();
     const [display, setDisplay] = useState('none');
     const [image, setImage] = useState();
+    const [displayImage, setDisplayImage] = useState('');
     const me = async () => {
         const body = {
             token: localStorage.getItem('token'),
@@ -55,6 +57,17 @@ const Home = () => {
         setImage(image);
     }
     useEffect(() => {
+        if (mounting) {
+            setMounting(false);
+            return;
+        }
+        const reader = new FileReader();
+        reader.onload = () => {
+            setDisplayImage(reader.result);
+        };
+        reader.readAsDataURL(image);
+    }, [image])
+    useEffect(() => {
         if (localStorage.getItem('token') === null) {
             navigate('/')
         }
@@ -68,7 +81,7 @@ const Home = () => {
     useEffect(() => {
         socket.emit('getAgainAllConnectedUsers');
         socket.on('connectedUsers', (data) => {
-            console.log("Home",data);
+            console.log("Home", data);
         })
     }, []);
     return (
@@ -84,7 +97,7 @@ const Home = () => {
                         </Stack>
                         <Stack spacing={2} direction='column' flex={2}>
                             <Createpost handelImage={handelImage} handelPopupDisplay={handelPopupDisplay} />
-                            <Post image={image} handelPopupDisplay={handelPopupDisplay} display={display} />
+                            <Post displayImage={displayImage} image={image} handelPopupDisplay={handelPopupDisplay} display={display} />
                             <Feed />
                             <Feed />
                             <Feed />
