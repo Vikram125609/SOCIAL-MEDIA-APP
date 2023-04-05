@@ -20,7 +20,7 @@ const Post = (props) => {
         try {
             await createPost(formData);
         } catch (error) {
-            
+            console.log(error);
         }
     }
     return (

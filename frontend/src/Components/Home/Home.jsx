@@ -2,7 +2,7 @@ import { Box, Stack } from "@mui/material";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { user } from "../../Api/Api";
+import { getAllPost, user } from "../../Api/Api";
 
 // Importing css Files
 import "./Home.css"
@@ -27,6 +27,7 @@ const Home = () => {
     const [display, setDisplay] = useState('none');
     const [image, setImage] = useState();
     const [displayImage, setDisplayImage] = useState('');
+    const [feed, setFeed] = useState([]);
     const me = async () => {
         const body = {
             token: localStorage.getItem('token'),
@@ -44,6 +45,10 @@ const Home = () => {
         } catch (error) {
             console.log(error);
         }
+    }
+    const getAllPosts = async () => {
+        const data = await getAllPost();
+        setFeed(data?.data?.data?.post);
     }
     const handelPopupDisplay = () => {
         if (display === 'none') {
@@ -66,6 +71,7 @@ const Home = () => {
             setDisplayImage(reader.result);
         };
         reader.readAsDataURL(image);
+        getAllPost();
     }, [image])
     useEffect(() => {
         if (localStorage.getItem('token') === null) {
@@ -73,6 +79,7 @@ const Home = () => {
         }
         else {
             me();
+            getAllPosts();
         }
     }, [])
     useEffect(() => {
@@ -98,9 +105,11 @@ const Home = () => {
                         <Stack spacing={2} direction='column' flex={2}>
                             <Createpost handelImage={handelImage} handelPopupDisplay={handelPopupDisplay} />
                             <Post displayImage={displayImage} image={image} handelPopupDisplay={handelPopupDisplay} display={display} />
-                            <Feed />
-                            <Feed />
-                            <Feed />
+                            {
+                                feed.map((data, index) => {
+                                    return <Feed key={index} first_name={data?.user_id?.first_name} last_name={data?.user_id?.last_name} image={data?.user_id?.image} post={data?.image} />
+                                })
+                            }
                         </Stack>
                     </Box>
                 )

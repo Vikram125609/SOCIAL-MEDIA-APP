@@ -153,4 +153,11 @@ const createPost = catchAsync(async (req, res, next) => {
     }
     return sendSuccess(res, 200, 'Image Uploaded', finalResponse)
 });
-module.exports = { followUser, allFollower, profile, me, friends, createPost };
+const getAllPost = catchAsync(async (req, res, next) => {
+    const post = await Post.find().populate('user_id', 'first_name last_name image');
+    const finalResponse = {
+        post: post
+    }
+    return sendSuccess(res,200,'All Post',finalResponse);
+});
+module.exports = { followUser, allFollower, profile, me, friends, createPost, getAllPost };
