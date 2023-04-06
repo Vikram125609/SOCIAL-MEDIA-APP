@@ -89,8 +89,10 @@ const Profile = () => {
         setMessageUser(data);
     };
     const userPosts = async () => {
-        const data = await userPost();
+        const user_id = window.location.pathname.split('/').pop();
+        const data = await userPost(user_id);
         setUserPostData(data?.data?.data?.post);
+        setCountPost(data?.data?.data?.post?.length);
     };
     const sendMessage = (e) => {
         if (e.keyCode === 13) {
@@ -121,7 +123,7 @@ const Profile = () => {
     }, []);
     useEffect(() => {
         userPosts();
-    }, []);
+    }, [id]);
     useEffect(() => {
         profileData();
     }, [id]);
