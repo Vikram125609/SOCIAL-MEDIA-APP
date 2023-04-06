@@ -3,6 +3,9 @@ const catchAsync = require("../utils/catchAsync");
 const Follow = require('../models/followModel');
 const User = require('../models/userModel');
 const { default: mongoose, mongo } = require("mongoose");
+const Post = require("../models/postModel");
+const { uploadImage } = require('../utils/uploadImage');
+const path = require('path');
 
 const followUser = catchAsync(async (req, res, next) => {
     const follow_id = req.params.id;
@@ -132,4 +135,38 @@ const friends = catchAsync(async (req, res, next) => {
     return sendSuccess(res, 200, 'userdetail', finalResponse);
 
 })
-module.exports = { followUser, allFollower, profile, me, friends };
+const createPost = catchAsync(async (req, res, next) => {
+    const { discription } = req.body;
+    const imagePath = path.join(__dirname, `../uploaded-images/image-${req.files[0].originalname}`)
+    const data = await uploadImage(imagePath);
+
+    const post = new Post({
+        user_id: req.user._id,
+        image: data.url,
+        description: discription
+    })
+
+    await post.save();
+
+    const finalResponse = {
+        post: post
+    }
+    return sendSuccess(res, 200, 'Image Uploaded', finalResponse)
+});
+const getAllPost = catchAsync(async (req, res, next) => {
+    const post = await Post.find().populate('user_id', 'first_name last_name image');
+    const finalResponse = {
+        post: post
+    }
+    return sendSuccess(res, 200, 'All Post', finalResponse);
+});
+const userPost = catchAsync(async (req, res, next) => {
+    const { user_id } = req.query;
+    const post = await Post.find({ user_id: user_id }).populate('user_id', 'first_name last_name image');
+    const finalResponse = {
+        post: post
+    }
+    console.log(finalResponse)
+    return sendSuccess(res, 200, 'My Post', finalResponse);
+});
+module.exports = { followUser, allFollower, profile, me, friends, createPost, getAllPost, userPost };

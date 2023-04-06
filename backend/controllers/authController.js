@@ -32,7 +32,7 @@ const signup = catchAsync(async (req, res, next) => {
     });
 
 
-    const imagePath = path.join(__dirname, `../uploads/image-${req.files[0].originalname}`)
+    const imagePath = path.join(__dirname, `../uploaded-images/image-${req.files[0].originalname}`)
     const data = await uploadImage(imagePath);
 
     const user = new User({

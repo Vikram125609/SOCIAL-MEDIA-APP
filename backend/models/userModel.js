@@ -14,18 +14,18 @@ const userSchema = new mongoose.Schema({
         default: ""
     },
     user_id: {
-        type: mongoose.Schema.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Credential'
     },
     block_user: [
         {
-            type: mongoose.Schema.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
             ref: 'User'
         }
     ],
     follow_user: [
         {
-            type: mongoose.Schema.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
             ref: 'User'
         }
     ]

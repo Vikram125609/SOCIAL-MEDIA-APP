@@ -15,9 +15,8 @@ const Message = (props) => {
                             props.getData(data);
                         }} color='secondary' sx={{ display: 'flex', padding: '10px', margin: '0px 0px 0px 0px', borderRadius: '5px', justifyContent: 'space-between', alignItems: 'center', boxShadow: '0px 0px 5px 0px rgba(0,0,0,0.43)' }} key={data._id}>
                             <Avatar sx={{ height: 50, width: 50, border: '1px solid' }} src={data.image} onClick={imageClicked} />
-                            <Typography color='secondary' variant='body1'>{data.first_name}</Typography>
-                            <Online style={{ position: 'relative', top: '0px', left: '0px' }} data={connectedUsers?.includes(data._id)} />
-                            <Typography color='secondary' variant='body1' >{data.last_name}</Typography>
+                            <Typography color='secondary' variant='body1'>{data.first_name + ' ' + data.last_name} </Typography>
+                            <Online data={connectedUsers?.includes(data._id)} />
                         </Box>
                     )
                 })
