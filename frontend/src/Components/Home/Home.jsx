@@ -16,6 +16,7 @@ import Feed from "./Feed"
 import Post from "./Post";
 import Loader from "../Loader/Loader";
 import Navbar from "../Navigation/Navbar";
+import Likes from "./Likes";
 
 // Constants
 const marginTop = 1;
