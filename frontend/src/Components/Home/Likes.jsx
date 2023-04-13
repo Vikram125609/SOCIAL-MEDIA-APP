@@ -8,26 +8,26 @@ import { ReactComponent as Funny } from './../Icons/Funny.svg';
 // importing css
 import './Likes.css'
 const Likes = (props) => {
-    const { mouseLeaved, clickSvgButton } = props;
+    const { mouseLeaved, clickSvgButton, post_id } = props;
     const { visibilityLikeContainer } = props;
 
     const setSvgThumb = () => {
-        clickSvgButton(<Thumb />)
+        clickSvgButton(<Thumb />, post_id, 1)
     }
     const setSvgLove = () => {
-        clickSvgButton(<Love />)
+        clickSvgButton(<Love />, post_id, 2)
     }
     const setSvgCelebrate = () => {
-        clickSvgButton(<Celebrate />)
+        clickSvgButton(<Celebrate />, post_id, 3)
     }
     const setSvgSupport = () => {
-        clickSvgButton(<Support />)
+        clickSvgButton(<Support />, post_id, 4)
     }
     const setSvgInsightfull = () => {
-        clickSvgButton(<Insightfull />)
+        clickSvgButton(<Insightfull />, post_id, 5)
     }
     const setSvgFunny = () => {
-        clickSvgButton(<Funny />)
+        clickSvgButton(<Funny />, post_id, 6)
     }
 
     return (
