@@ -18,3 +18,4 @@ export const userFriends = () => API.get('/friends');
 export const createPost = (data) => API.post('/createpost', data);
 export const getAllPost = () => API.get('/getAllPost');
 export const userPost = (user_id) => API.get(`/userPost?user_id=${user_id}`);
+export const likePost = (data) => API.post(`/like/post/${data?.post_id}`, data);

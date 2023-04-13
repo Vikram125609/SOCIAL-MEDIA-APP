@@ -14,6 +14,7 @@ io.on('connection', (socket) => {
     console.log('Connected', socket.id);
     socket.join(socket.id);
     socket.on('sendMessage', (data) => {
+        console.log(data);
         socket.broadcast.emit('broadCast', data);
     });
     const users = [];
@@ -29,22 +30,22 @@ io.on('connection', (socket) => {
         }
         socket.emit('connectedUsers', users);
     })
-    socket.on('privateMessage', (data) => {
-        const { message, friend_id, my_socket_id } = data;
-        const users = [];
-        for (let [id, socket] of io.of("/").sockets) {
-            if (socket.handshake.query.user_id === friend_id) {
-                console.log(socket.handshake.query.user_id, friend_id, socket.id);
-                socket.to(socket.id).emit('privateMessage', {
-                    message,
-                    from: my_socket_id
-                });
-                break;
-            }
-        }
-        console.log(message, friend_id, my_socket_id);
-        console.log('This is private message', data);
-    })
+    // socket.on('privateMessage', (data) => {
+    //     const { message, friend_id, my_socket_id } = data;
+    //     const users = [];
+    //     for (let [id, socket] of io.of("/").sockets) {
+    //         if (socket.handshake.query.user_id === friend_id) {
+    //             console.log(socket.handshake.query.user_id, friend_id, socket.id);
+    //             socket.to(socket.id).emit('privateMessage', {
+    //                 message,
+    //                 from: my_socket_id
+    //             });
+    //             break;
+    //         }
+    //     }
+    //     console.log(message, friend_id, my_socket_id);
+    //     console.log('This is private message', data);
+    // })
     socket.on('disconnect', () => {
         // Here the io.emit is required because i want to notify all the users without refresh that I got offline
         console.log('Disconnected');

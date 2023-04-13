@@ -6,6 +6,7 @@ const { default: mongoose, mongo } = require("mongoose");
 const Post = require("../models/postModel");
 const { uploadImage } = require('../utils/uploadImage');
 const path = require('path');
+const Like = require("../models/likeModel");
 
 const followUser = catchAsync(async (req, res, next) => {
     const follow_id = req.params.id;
@@ -108,7 +109,8 @@ const profile = catchAsync(async (req, res, next) => {
     }
 
     return sendSuccess(res, 200, 'userdetail', finalResponse)
-})
+});
+
 const friends = catchAsync(async (req, res, next) => {
     const { _id } = req.user;
     const followAndfollower = await Follow.find({ $or: [{ "follow_id": _id }, { "user_id": _id }] });
@@ -134,7 +136,8 @@ const friends = catchAsync(async (req, res, next) => {
     }
     return sendSuccess(res, 200, 'userdetail', finalResponse);
 
-})
+});
+
 const createPost = catchAsync(async (req, res, next) => {
     const { discription } = req.body;
     const imagePath = path.join(__dirname, `../uploaded-images/image-${req.files[0].originalname}`)
@@ -153,13 +156,88 @@ const createPost = catchAsync(async (req, res, next) => {
     }
     return sendSuccess(res, 200, 'Image Uploaded', finalResponse)
 });
+
 const getAllPost = catchAsync(async (req, res, next) => {
-    const post = await Post.find().populate('user_id', 'first_name last_name image');
+
+    const post = await Post.aggregate([
+        {
+            $match: {}
+        },
+        {
+            $lookup: {
+                from: 'likes',
+                localField: 'likes',
+                foreignField: '_id',
+                as: 'likes'
+            }
+        },
+        {
+            $lookup: {
+                from: 'users',
+                localField: 'user_id',
+                foreignField: '_id',
+                as: 'user_id'
+            }
+        },
+        {
+            $project: {
+                _id: 1,
+                image: 1,
+                likes: 1,
+                description: 1,
+                comments: 1,
+                user_id: { $arrayElemAt: ['$user_id', 0] }
+            }
+        },
+        {
+            $lookup: {
+                from: 'users',
+                localField: 'likes.user_id',
+                foreignField: '_id',
+                as: 'like_user_id'
+            }
+        },
+        {
+            $project: {
+                _id: 1,
+                image: 1,
+                description: 1,
+                comments: 1,
+                user_id: 1,
+                likes: {
+                    $map: {
+                        input: '$likes',
+                        as: 'i',
+                        in: {
+                            $mergeObjects: [
+                                '$$i',
+                                {
+                                    $first: {
+                                        $filter: {
+                                            input: '$like_user_id',
+                                            cond: {
+                                                $eq: [
+                                                    '$$this._id', '$$i.user_id'
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    ])
+
     const finalResponse = {
         post: post
     }
     return sendSuccess(res, 200, 'All Post', finalResponse);
+    
 });
+
 const userPost = catchAsync(async (req, res, next) => {
     const { user_id } = req.query;
     const post = await Post.find({ user_id: user_id }).populate('user_id', 'first_name last_name image');
@@ -169,4 +247,35 @@ const userPost = catchAsync(async (req, res, next) => {
     console.log(finalResponse)
     return sendSuccess(res, 200, 'My Post', finalResponse);
 });
-module.exports = { followUser, allFollower, profile, me, friends, createPost, getAllPost, userPost };
+
+const likePost = catchAsync(async (req, res, next) => {
+
+    const user_id = req.user._id;
+
+    const { post_id } = req.params;
+
+    const { type } = req.body;
+
+    const like = new Like({
+        user_id: user_id,
+        type: type,
+        post_id: post_id
+    })
+
+    const post = await Post.findByIdAndUpdate(
+        { _id: post_id },
+        { $push: { likes: like._id } },
+        { new: true, runValidators: true }
+    )
+
+    await like.save();
+
+    const finalResponse = {
+        like: like,
+        post: post
+    }
+    return sendSuccess(res, 200, 'Liked Successfully', finalResponse);
+
+});
+
+module.exports = { followUser, allFollower, profile, me, friends, createPost, getAllPost, userPost, likePost };

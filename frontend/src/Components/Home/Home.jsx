@@ -16,6 +16,7 @@ import Feed from "./Feed"
 import Post from "./Post";
 import Loader from "../Loader/Loader";
 import Navbar from "../Navigation/Navbar";
+import Likes from "./Likes";
 
 // Constants
 const marginTop = 1;
@@ -107,7 +108,7 @@ const Home = () => {
                             <Post displayImage={displayImage} image={image} handelPopupDisplay={handelPopupDisplay} display={display} />
                             {
                                 feed.map((data, index) => {
-                                    return <Feed key={index} first_name={data?.user_id?.first_name} last_name={data?.user_id?.last_name} image={data?.user_id?.image} post={data?.image} />
+                                    return <Feed key={index} post_id={data?._id} first_name={data?.user_id?.first_name} last_name={data?.user_id?.last_name} image={data?.user_id?.image} post={data?.image} likes={data?.likes} />
                                 })
                             }
                         </Stack>

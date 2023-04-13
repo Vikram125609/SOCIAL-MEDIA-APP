@@ -1,0 +1,31 @@
+.like {
+  transition: scale 1s;
+}
+.like:hover {
+  scale: 1.25;
+}
+.likeContainer {
+  position: absolute;
+  top: -74px;
+  left: 0px;
+  background-color: rgb(221, 221, 221);
+  border-radius: 10px;
+  padding: 5px;
+  /* animation: fadeIn 1s; */
+}
+/* @keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  25% {
+    opacity: 2.5;
+  }
+  50% {
+    opacity: 5;
+  }
+  75% {
+    opacity: 7.5;
+  }
+  100% {
+    opacity: 1;
+  } */
