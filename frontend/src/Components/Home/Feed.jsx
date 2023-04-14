@@ -18,7 +18,7 @@ const postContainerBorderRadius = '10px'
 const postContainerBoxShadow = '0px 0px 5px 0px rgba(0,0,0,0.43)'
 const time = new Date();
 const Feed = (props) => {
-    const { first_name, last_name, image, post, post_id, likes } = props;
+    const { first_name, last_name, image, post, post_id, likes, times } = props;
     const [visibilityLikeContainer, setVisibilityLikeContainer] = useState('hidden');
     const [likeState, setLikeState] = useState('')
     const handelLike = () => {
@@ -65,6 +65,8 @@ const Feed = (props) => {
                 setLikeState(<Funny />)
             }
         }
+        // console.log(times.toLocaleTimeString())
+        console.log(times)
     }, [likes])
     return (
         <Box>
