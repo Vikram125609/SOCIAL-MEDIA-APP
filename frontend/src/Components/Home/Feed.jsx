@@ -8,6 +8,8 @@ import { ReactComponent as Support } from './../Icons/Support.svg';
 import { ReactComponent as Insightfull } from './../Icons/Insightfull.svg';
 import { ReactComponent as Funny } from './../Icons/Funny.svg';
 
+// importing Secific home related components
+import Userlist from "./Components/Like/Userlist";
 // Importing Icons
 import { useEffect, useState } from "react";
 import Likes from "./Likes";
@@ -96,6 +98,12 @@ const Feed = (props) => {
                     <Button color='secondary' variant='outlined'>Comment</Button>
                     <Button color='secondary' variant='outlined'>Share</Button>
                 </Stack>
+                <Stack sx={{ margin: 0 }}>
+                    <Stack direction='row' sx={{ margin: 0 }}>
+                        <Userlist likes={likes} />
+                    </Stack>
+                </Stack>
+                <hr />
             </Stack>
         </Box>
     )
