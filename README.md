@@ -1,3 +1,1 @@
-# Social Media App
-Will Add Architecture Soon
-<a href="https://www.youtube.com/watch?v=yXryGCUVFKk">Video Link</a> : 
+# Social Media App : <a href="https://www.youtube.com/watch?v=yXryGCUVFKk">Watch Now !!</a>
