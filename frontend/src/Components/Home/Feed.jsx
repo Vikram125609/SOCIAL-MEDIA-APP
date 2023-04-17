@@ -9,20 +9,25 @@ import { ReactComponent as Insightfull } from './../Icons/Insightfull.svg';
 import { ReactComponent as Funny } from './../Icons/Funny.svg';
 
 // importing Secific home related components
-import Userlist from "./Components/Like/Userlist";
+import Likecounter from "./Components/Likecounter";
+import Commentcounter from "./Components/Commentcounter";
 // Importing Icons
 import { useEffect, useState } from "react";
 import Likes from "./Likes";
 import { likePost } from "../../Api/Api";
+import Userlikes from "./Components/Userlikes";
+import Usercomments from "./Components/Usercomments";
 const postImageWidth = '50px';
 const postImageHeight = '50px';
 const postContainerBorderRadius = '10px'
 const postContainerBoxShadow = '0px 0px 5px 0px rgba(0,0,0,0.43)'
 const time = new Date();
 const Feed = (props) => {
-    const { first_name, last_name, image, post, post_id, likes, times } = props;
+    const { first_name, last_name, image, post, post_id, likes } = props;
     const [visibilityLikeContainer, setVisibilityLikeContainer] = useState('hidden');
     const [likeState, setLikeState] = useState('')
+    const [displayUserLikeContainer, setDisplayUserLikeContainer] = useState('none');
+    const [displayUserCommentContainer, setDisplayUserCommentContainer] = useState('none');
     const handelLike = () => {
         if (likeState === '') {
             setLikeState(<Thumb />);
@@ -35,6 +40,7 @@ const Feed = (props) => {
         setVisibilityLikeContainer('visible');
     }
     const mouseLeaved = () => {
+
         setVisibilityLikeContainer('hidden');
     }
     const clickSvgButton = async (component, post_id, type) => {
@@ -45,30 +51,45 @@ const Feed = (props) => {
         setLikeState(component);
         await likePost(data);
     }
+    const displayUsersLikesContainer = () => {
+        if (displayUserLikeContainer === 'none') {
+            setDisplayUserLikeContainer('block')
+        }
+        if (displayUserLikeContainer === 'block') {
+            setDisplayUserLikeContainer('none')
+        }
+
+    }
+    const displayUsersCommentContainer = () => {
+        if (displayUserCommentContainer === 'none') {
+            setDisplayUserCommentContainer('block')
+        }
+        if (displayUserCommentContainer === 'block') {
+            setDisplayUserCommentContainer('none')
+        }
+    }
     useEffect(() => {
-        const data = likes.filter((data) => data._id == localStorage.getItem('_id'));
+        const data = likes.filter((data) => data._id === localStorage.getItem('_id'));
         if (data[0]?.type) {
-            if (data[0]?.type == 1) {
+            if (data[0]?.type === 1) {
                 setLikeState(<Thumb />)
             }
-            if (data[0]?.type == 2) {
+            if (data[0]?.type === 2) {
                 setLikeState(<Love />)
             }
-            if (data[0]?.type == 3) {
+            if (data[0]?.type === 3) {
                 setLikeState(<Celebrate />)
             }
-            if (data[0]?.type == 4) {
+            if (data[0]?.type === 4) {
                 setLikeState(<Support />)
             }
-            if (data[0]?.type == 5) {
+            if (data[0]?.type === 5) {
                 setLikeState(<Insightfull />)
             }
-            if (data[0]?.type == 6) {
+            if (data[0]?.type === 6) {
                 setLikeState(<Funny />)
             }
         }
-        // console.log(times.toLocaleTimeString())
-        console.log(times)
     }, [likes])
     return (
         <Box>
@@ -98,12 +119,20 @@ const Feed = (props) => {
                     <Button color='secondary' variant='outlined'>Comment</Button>
                     <Button color='secondary' variant='outlined'>Share</Button>
                 </Stack>
-                <Stack sx={{ margin: 0 }}>
-                    <Stack direction='row' sx={{ margin: 0 }}>
-                        <Userlist likes={likes} />
-                    </Stack>
-                </Stack>
                 <hr />
+                <Stack sx={{ margin: 0 }}>
+                    <Stack direction='row' sx={{ margin: 0, justifyContent: 'space-between' }}>
+                        <Likecounter setDisplay={displayUsersLikesContainer} totalLikes={likes.length} />
+                        <Commentcounter setDisplay={displayUsersCommentContainer} r totalComments='9' />
+                    </Stack>
+                    <Stack sx={{ display: displayUserLikeContainer }}>
+                        <Userlikes likes={likes} />
+                    </Stack>
+                    <Stack sx={{ display: displayUserCommentContainer }}>
+                        <Usercomments />
+                    </Stack>
+
+                </Stack>
             </Stack>
         </Box>
     )
