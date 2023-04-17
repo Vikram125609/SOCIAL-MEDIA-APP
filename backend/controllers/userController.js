@@ -186,6 +186,7 @@ const getAllPost = catchAsync(async (req, res, next) => {
                 likes: 1,
                 description: 1,
                 comments: 1,
+                createdAt: 1,
                 user_id: { $arrayElemAt: ['$user_id', 0] }
             }
         },
@@ -204,6 +205,7 @@ const getAllPost = catchAsync(async (req, res, next) => {
                 description: 1,
                 comments: 1,
                 user_id: 1,
+                createdAt: 1,
                 likes: {
                     $map: {
                         input: '$likes',
@@ -235,7 +237,7 @@ const getAllPost = catchAsync(async (req, res, next) => {
         post: post
     }
     return sendSuccess(res, 200, 'All Post', finalResponse);
-    
+
 });
 
 const userPost = catchAsync(async (req, res, next) => {

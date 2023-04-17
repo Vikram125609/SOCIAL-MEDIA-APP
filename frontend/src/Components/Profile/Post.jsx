@@ -6,8 +6,8 @@ const postImageHeight = '50px';
 const postContainerBorderRadius = '10px'
 const postContainerBoxShadow = '0px 0px 5px 0px rgba(0,0,0,0.43)'
 const time = new Date();
-const Feed = (props) => {
-    console.log(props);
+const Post = (props) => {
+    const { data } = props;
     const [like, setLike] = useState('outlined');
     const handelLike = () => {
         if (like === 'outlined') {
@@ -20,8 +20,8 @@ const Feed = (props) => {
     return (
         <Box>
             {
-                props?.data.map((data) => {
-                    return <>
+                data.map((data) => {
+                    return <div key={data?._id}>
                         <Stack spacing={2} direction='column' flex={2} sx={{ mx: '10px', p: '10px', my: '10px', borderRadius: postContainerBorderRadius, boxShadow: postContainerBoxShadow }}>
                             <Stack direction='row' alignItems='center' justifyContent='space-around'>
                                 <Avatar sx={{ width: postImageWidth, height: postImageHeight }} src={data?.user_id?.image} />
@@ -41,10 +41,10 @@ const Feed = (props) => {
                                 <Button color='secondary' variant='outlined'>Share</Button>
                             </Stack>
                         </Stack>
-                    </>
+                    </div>
                 })
             }
         </Box>
     )
 };
-export default Feed;
+export default Post;
