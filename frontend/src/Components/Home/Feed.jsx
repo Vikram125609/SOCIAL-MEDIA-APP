@@ -25,12 +25,13 @@ const postContainerBorderRadius = '10px'
 const postContainerBoxShadow = '0px 0px 5px 0px rgba(0,0,0,0.43)'
 const time = new Date();
 const Feed = (props) => {
-    const { first_name, last_name, image, post, post_id, likes } = props;
+    const { first_name, last_name, image, post, post_id, likes,comments } = props;
     const [visibilityLikeContainer, setVisibilityLikeContainer] = useState('hidden');
     const [likeState, setLikeState] = useState('')
     const [displayUserLikeContainer, setDisplayUserLikeContainer] = useState('none');
     const [displayUserCommentContainer, setDisplayUserCommentContainer] = useState('none');
     const [displayUserCommentTextBox, setDisplayUserCommentTextBox] = useState('none');
+    const [commentState, setCommentState] = useState('');
     const handelLike = () => {
         if (likeState === '') {
             setLikeState(<Thumb />);
@@ -39,9 +40,13 @@ const Feed = (props) => {
             setLikeState('');
         }
     }
+    const handelComment = (e) => {
+        setCommentState(e.target.value);
+    }
     const commentAPost = async () => {
         const data = {
-            post_id: post_id
+            post_id: post_id,
+            comment: commentState
         }
         await commentPost(data);
     }
@@ -141,19 +146,19 @@ const Feed = (props) => {
                 <Stack sx={{ margin: 0 }}>
                     <Stack direction='row' sx={{ margin: 0, justifyContent: 'space-between' }}>
                         <Likecounter setDisplay={displayUsersLikesContainer} totalLikes={likes.length} />
-                        <Commentcounter setDisplay={displayUsersCommentContainer} r totalComments='9' />
+                        <Commentcounter setDisplay={displayUsersCommentContainer} totalComments={comments.length} />
                     </Stack>
                     <Stack className='displayUserLikeContainer' sx={{ display: displayUserLikeContainer, maxHeight: '400px', overflow: 'auto' }}>
                         <Userlikes likes={likes} />
                     </Stack>
                     <Stack sx={{ display: displayUserCommentTextBox }}>
                         <Stack display='flex' justifyContent='space-between' alignItems='center' direction='row' >
-                            <TextField fullWidth placeholder='Write a comment' />
+                            <TextField onChange={handelComment} fullWidth placeholder='Write a comment' />
                             <Button onClick={commentAPost}>Post</Button>
                         </Stack>
                     </Stack>
                     <Stack sx={{ display: displayUserCommentContainer }}>
-                        <Usercomments />
+                        <Usercomments comments={comments} />
                     </Stack>
                 </Stack>
             </Stack>

@@ -7,6 +7,7 @@ const Post = require("../models/postModel");
 const { uploadImage } = require('../utils/uploadImage');
 const path = require('path');
 const Like = require("../models/likeModel");
+const Comment = require("../models/commentModel");
 
 const followUser = catchAsync(async (req, res, next) => {
     const follow_id = req.params.id;
@@ -173,6 +174,14 @@ const getAllPost = catchAsync(async (req, res, next) => {
         },
         {
             $lookup: {
+                from: 'comments',
+                localField: 'comments',
+                foreignField: '_id',
+                as: 'comments'
+            }
+        },
+        {
+            $lookup: {
                 from: 'users',
                 localField: 'user_id',
                 foreignField: '_id',
@@ -199,6 +208,14 @@ const getAllPost = catchAsync(async (req, res, next) => {
             }
         },
         {
+            $lookup: {
+                from: 'users',
+                localField: 'comments.user_id',
+                foreignField: '_id',
+                as: 'comment_user_id'
+            }
+        },
+        {
             $project: {
                 _id: 1,
                 image: 1,
@@ -206,6 +223,7 @@ const getAllPost = catchAsync(async (req, res, next) => {
                 comments: 1,
                 user_id: 1,
                 createdAt: 1,
+                comment_user_id: 1,
                 likes: {
                     $map: {
                         input: '$likes',
@@ -230,12 +248,47 @@ const getAllPost = catchAsync(async (req, res, next) => {
                     }
                 }
             }
+        },
+        {
+            $project: {
+                _id: 1,
+                image: 1,
+                description: 1,
+                comments: 1,
+                user_id: 1,
+                createdAt: 1,
+                likes: 1,
+                comments: {
+                    $map: {
+                        input: '$comments',
+                        as: 'i',
+                        in: {
+                            $mergeObjects: [
+                                '$$i',
+                                {
+                                    $first: {
+                                        $filter: {
+                                            input: '$comment_user_id',
+                                            cond: {
+                                                $eq: [
+                                                    '$$this._id', '$$i.user_id'
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
         }
     ])
 
     const finalResponse = {
         post: post
     }
+    
     return sendSuccess(res, 200, 'All Post', finalResponse);
 
 });
@@ -281,8 +334,30 @@ const likePost = catchAsync(async (req, res, next) => {
 });
 
 const commentPost = catchAsync(async (req, res, next) => {
+
     const { post_id } = req.params;
-    console.log(post_id);
-    return sendSuccess(res, 200, 'Commented Successfully', post_id);
+    const { comment } = req.body;
+    const { _id } = req.user;
+
+    const commentAPost = new Comment({
+        post_id: post_id,
+        comment: comment,
+        user_id: _id
+    });
+
+    await commentAPost.save();
+
+    const post = await Post.findByIdAndUpdate(
+        { _id: post_id },
+        { $push: { comments: commentAPost._id } },
+        { new: true, runValidators: true }
+    )
+
+    const finalResponse = {
+        post: post,
+        comment: commentAPost
+    }
+
+    return sendSuccess(res, 200, 'Commented Successfully', finalResponse);
 })
 module.exports = { followUser, allFollower, profile, me, friends, createPost, getAllPost, userPost, likePost, commentPost };
