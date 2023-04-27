@@ -19,3 +19,4 @@ export const createPost = (data) => API.post('/createpost', data);
 export const getAllPost = () => API.get('/getAllPost');
 export const userPost = (user_id) => API.get(`/userPost?user_id=${user_id}`);
 export const likePost = (data) => API.post(`/like/post/${data?.post_id}`, data);
+export const commentPost = (data) => API.post(`/comment/post/${data?.post_id}`);

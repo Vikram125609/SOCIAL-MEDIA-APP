@@ -280,4 +280,9 @@ const likePost = catchAsync(async (req, res, next) => {
 
 });
 
-module.exports = { followUser, allFollower, profile, me, friends, createPost, getAllPost, userPost, likePost };
+const commentPost = catchAsync(async (req, res, next) => {
+    const { post_id } = req.params;
+    console.log(post_id);
+    return sendSuccess(res, 200, 'Commented Successfully', post_id);
+})
+module.exports = { followUser, allFollower, profile, me, friends, createPost, getAllPost, userPost, likePost, commentPost };
