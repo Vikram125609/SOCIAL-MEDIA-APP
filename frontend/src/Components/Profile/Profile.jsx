@@ -155,10 +155,10 @@ const Profile = () => {
                     <Avatar onClick={imageClicked} sx={{ height: 200, width: 200 }} src={user?.image} />
                     <Stack sx={{ justifyContent: 'space-around' }} direction='row' margin='1em 0px 0px 0px' spacing={2}>
                         <h4>{user?.first_name + ' ' + user?.last_name}</h4>
-                        <Button color='secondary' variant='outlined'>Followers {countFollower}</Button>
-                        <Button color='secondary' variant='outlined'>Post {countPost} </Button>
-                        <Button color='secondary' variant='outlined'>Following {countFollowing}</Button>
-                        <Button color='secondary' variant='outlined'>Friends {countFriends}</Button>
+                        <Typography color='secondary' variant='outlined'>Followers {countFollower}</Typography>
+                        <Typography color='secondary' variant='outlined'>Post {countPost} </Typography>
+                        <Typography color='secondary' variant='outlined'>Following {countFollowing}</Typography>
+                        <Typography color='secondary' variant='outlined'>Friends {countFriends}</Typography>
                     </Stack>
                     <ToggleButtonGroup
                         color="primary"

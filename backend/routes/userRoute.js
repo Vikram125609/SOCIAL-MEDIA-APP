@@ -1,5 +1,5 @@
 const express = require('express');
-const { followUser, allFollower, profile, me, friends, createPost, getAllPost, userPost, likePost, commentPost } = require('../controllers/userController');
+const { followUser, allFollower, profile, me, friends, createPost, getAllPost, userPost, likePost, commentPost, find } = require('../controllers/userController');
 const globalAccess = require('../middlewares/auth');
 // const globalAccess = require('../middlewares/auth');
 const { upload } = require('../middlewares/multer');
@@ -14,4 +14,5 @@ router.get('/getAllPost', globalAccess, getAllPost);
 router.get('/userPost', globalAccess, userPost);
 router.post('/like/post/:post_id', globalAccess, likePost);
 router.post('/comment/post/:post_id', globalAccess, commentPost)
+router.post('/find', globalAccess, find)
 module.exports = router;

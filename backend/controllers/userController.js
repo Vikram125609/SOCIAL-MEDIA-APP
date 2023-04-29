@@ -288,7 +288,7 @@ const getAllPost = catchAsync(async (req, res, next) => {
     const finalResponse = {
         post: post
     }
-    
+
     return sendSuccess(res, 200, 'All Post', finalResponse);
 
 });
@@ -360,4 +360,23 @@ const commentPost = catchAsync(async (req, res, next) => {
 
     return sendSuccess(res, 200, 'Commented Successfully', finalResponse);
 })
-module.exports = { followUser, allFollower, profile, me, friends, createPost, getAllPost, userPost, likePost, commentPost };
+
+const find = catchAsync(async (req, res, next) => {
+    const { query } = req.body;
+    let data = await User.aggregate([
+        {
+            $match: { first_name: { $regex: query } }
+        }
+    ]);
+
+    if (data.length > 5) {
+        data = data.slice(0, 5);
+    }
+
+    console.log(data);
+    const finalResponse = {
+        data: data
+    }
+    return sendSuccess(res, 200, 'Users', finalResponse);
+});
+module.exports = { followUser, allFollower, profile, me, friends, createPost, getAllPost, userPost, likePost, commentPost, find };
