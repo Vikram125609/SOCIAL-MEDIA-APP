@@ -16,8 +16,13 @@ import ControlPointOutlinedIcon from '@mui/icons-material/ControlPointOutlined';
 import MessageIcon from '@mui/icons-material/Message';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { find } from "../../Api/Api";
-import { useReducer, useState } from "react";
+import { find, profileViewCount } from "../../Api/Api";
+import { useEffect, useReducer, useState } from "react";
+import { socket } from "../../socket";
+// importing Toast
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { Typography } from "@material-ui/core";
 
 // Constants
 const toolbarLeftRightMargin = "100px";
@@ -25,20 +30,40 @@ const iconColor = "white";
 
 const initialState = {
     visibilitySearchUserContainer: 'hidden',
-    dataSearchUserContainer: []
+    dataSearchUserContainer: [],
+    profileViewCount: 0
 }
 const reducer = (currentState, action) => {
     switch (action.type) {
         case 'hidden':
             return { ...currentState, visibilitySearchUserContainer: 'hidden' };
         case 'data':
-            return { ...currentState, dataSearchUserContainer: action.data, visibilitySearchUserContainer: 'visible' }
+            return { ...currentState, dataSearchUserContainer: action.data, visibilitySearchUserContainer: 'visible' };
+        case 'profileViewCount':
+            return { ...currentState, profileViewCount: action?.profileViewCount }
 
     }
 }
 
 const Navbar = () => {
     const [state, dispatch] = useReducer(reducer, initialState);
+
+    const getProfileViewCount = async () => {
+        const data = await profileViewCount();
+        dispatch({ type: 'profileViewCount', profileViewCount: data?.data?.data?.profileViewCount });
+    };
+
+    useEffect(() => {
+        socket.on('viewed', ({ profileViewCount }) => {
+            toast(`Profile View Count ${profileViewCount}`);
+            dispatch({ type: 'profileViewCount', profileViewCount: profileViewCount });
+        })
+    }, []);
+
+    useEffect(() => {
+        getProfileViewCount();
+    });
+
     const searchUser = async (e) => {
         const data = {
             query: e.target.value
@@ -95,13 +120,14 @@ const Navbar = () => {
                                     <PeopleIcon fontSize="large" />
                                 </IconButton>
                             </Link>
-                            <Link to="/home" >
+                            <Link to="/notifications" >
                                 <IconButton
                                     style={{ color: `${iconColor}` }}
                                     size="large"
                                     edge="start"
                                     color="inherit">
                                     <NotificationsIcon fontSize="large" />
+                                    <span style={{ color: 'red' }} >{state?.profileViewCount}</span>
                                 </IconButton>
                             </Link>
                             <Link to={"/profile/" + localStorage.getItem('_id')} >
@@ -118,6 +144,7 @@ const Navbar = () => {
                 </Toolbar>
             </AppBar>
             <Searchuser dataSearchUserContainer={state?.dataSearchUserContainer} searchUserContainerVisibility={state?.visibilitySearchUserContainer} />
+            <ToastContainer />
         </Box>
     );
 };

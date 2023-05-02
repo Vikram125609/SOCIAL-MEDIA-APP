@@ -51,6 +51,7 @@ const Profile = () => {
     const [received, setReceived] = useState([]);
     const [connectedUsers, setConnectedUsers] = useState([]);
     const [userPostData, setUserPostData] = useState([]);
+    const [mounting, setMounting] = useState(true);
     const navigate = useNavigate();
     const profileData = async () => {
         try {
@@ -126,6 +127,20 @@ const Profile = () => {
     }, [id]);
     useEffect(() => {
         profileData();
+    }, [id]);
+    useEffect(() => {
+        if (mounting) {
+            socket.emit('profileView', {
+                viewed_id: urlParams.split('/').pop(),
+                viewer_id: localStorage.getItem('_id')
+            })
+            setMounting(false);
+            return;
+        }
+        socket.emit('profileView', {
+            viewed: urlParams.split('/').pop(),
+            viewer: localStorage.getItem('_id')
+        })
     }, [id]);
     useEffect(() => {
         socket.on('broadCast', (message) => {

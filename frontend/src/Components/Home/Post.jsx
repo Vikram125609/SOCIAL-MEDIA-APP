@@ -15,7 +15,6 @@ const Post = (props) => {
         const formData = new FormData();
         formData.append("discription", discription);
         formData.append("image", image);
-        console.log(formData);
         handelPopupDisplay();
         try {
             await createPost(formData);

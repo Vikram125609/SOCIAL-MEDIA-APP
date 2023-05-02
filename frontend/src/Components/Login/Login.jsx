@@ -59,7 +59,6 @@ const Login = () => {
         const name = e.target.name;
         const value = e.target.value;
         setUserdata({ ...userdata, [name]: value })
-        console.log(userdata)
     }
 
     return (

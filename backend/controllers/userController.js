@@ -160,7 +160,7 @@ const createPost = catchAsync(async (req, res, next) => {
 
 const getAllPost = catchAsync(async (req, res, next) => {
 
-    const post = await Post.aggregate([
+    let post = await Post.aggregate([
         {
             $match: {}
         },
@@ -285,6 +285,8 @@ const getAllPost = catchAsync(async (req, res, next) => {
         }
     ])
 
+    post.sort(() => Math.random() - 0.5);
+
     const finalResponse = {
         post: post
     }
@@ -299,7 +301,6 @@ const userPost = catchAsync(async (req, res, next) => {
     const finalResponse = {
         post: post
     }
-    console.log(finalResponse)
     return sendSuccess(res, 200, 'My Post', finalResponse);
 });
 
@@ -373,7 +374,7 @@ const find = catchAsync(async (req, res, next) => {
         data = data.slice(0, 5);
     }
 
-    console.log(data);
+
     const finalResponse = {
         data: data
     }

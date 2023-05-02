@@ -21,7 +21,7 @@ import Likes from "./Likes";
 // Constants
 const marginTop = 1;
 const Home = () => {
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
     const [mounting, setMounting] = useState(true);
     const [userdata, setUserdata] = useState();
@@ -89,7 +89,6 @@ const Home = () => {
     useEffect(() => {
         socket.emit('getAgainAllConnectedUsers');
         socket.on('connectedUsers', (data) => {
-            console.log("Home", data);
         })
     }, []);
     return (

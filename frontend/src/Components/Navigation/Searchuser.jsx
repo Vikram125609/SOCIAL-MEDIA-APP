@@ -7,7 +7,6 @@ const height = '50vh'
 const padding = 1;
 const Searchuser = (props) => {
     const { searchUserContainerVisibility, dataSearchUserContainer } = props;
-    console.log(dataSearchUserContainer)
     return (
         <Stack padding={padding} spacing={1} maxHeight={height} overflow='auto' sx={{ backgroundColor: 'white', visibility: searchUserContainerVisibility }} width={width} boxShadow={postContainerBoxShadow} position='absolute'>
             {

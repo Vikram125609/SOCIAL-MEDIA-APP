@@ -9,7 +9,6 @@ const Usercard = (props) => {
     const updateFollow = async () => {
         if (follow === "Follow") {
             setFollow("Unfollow");
-            console.log(id);
             await followUser(id);
         }
         else {

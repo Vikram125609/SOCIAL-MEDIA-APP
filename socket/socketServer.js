@@ -1,5 +1,6 @@
+const mongoose = require('mongoose')
 const socketServer = require('./app');
-const dotenv = require('dotenv').config({ path: "./config.env" })
+require('dotenv').config({ path: "./config.env" })
 
 process.on('uncaughtException', err => {
     console.log('UNCAUGHT EXCEPTION! 💥 Shutting down...');
@@ -12,6 +13,9 @@ process.on('exit', (code) => {
         console.log(`Restart the server 🔥 🔥 🔥`)
     }
 });
+
+mongoose.set("strictQuery", false);
+mongoose.connect(process.env.MONGODB_URI).then(() => console.log('Database Connected Successfully !!')).catch((error) => console.log(error));
 
 const port = 3002 || process.env.PORT;
 socketServer.listen(port, () => {

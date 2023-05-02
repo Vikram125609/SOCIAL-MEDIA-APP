@@ -1,5 +1,6 @@
 import { Avatar, Button, Stack, ToggleButton, ToggleButtonGroup } from '@mui/material'
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom';
 // importing icons
 import { ReactComponent as Thumb } from './../../Icons/Thumb.svg';
 import { ReactComponent as Love } from './../../Icons/Love.svg';
@@ -57,7 +58,9 @@ const Userlikes = (props) => {
                 {
                     userlikes.map((data) => {
                         return (
-                            <Userlist key={data?._id} image={data?.image} first_name={data?.first_name} last_name={data?.last_name} />
+                            <Link key={data._id} style={{ textDecoration: 'none' }} to={"/profile/" + data._id} >
+                                <Userlist key={data?._id} image={data?.image} first_name={data?.first_name} last_name={data?.last_name} />
+                            </Link>
                         );
                     })
                 }

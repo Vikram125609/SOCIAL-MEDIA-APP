@@ -16,7 +16,6 @@ const User = () => {
         const data = await allFollowers();
         setData(data?.data?.data);
         setLoading(false);
-        console.log(data?.data?.data)
     }
 
     const allUser = async () => {
@@ -31,7 +30,6 @@ const User = () => {
             navigate('/')
         }
         else {
-            console.log(localStorage.getItem('token'));
             allFollower();
             allUser();
         }
