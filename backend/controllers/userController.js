@@ -2,7 +2,7 @@ const { sendSuccess } = require("../utils/apiResponse");
 const catchAsync = require("../utils/catchAsync");
 const Follow = require('../models/followModel');
 const User = require('../models/userModel');
-const { default: mongoose, mongo } = require("mongoose");
+const { default: mongoose} = require("mongoose");
 const Post = require("../models/postModel");
 const { uploadImage } = require('../utils/uploadImage');
 const path = require('path');
@@ -380,4 +380,5 @@ const find = catchAsync(async (req, res, next) => {
     }
     return sendSuccess(res, 200, 'Users', finalResponse);
 });
+
 module.exports = { followUser, allFollower, profile, me, friends, createPost, getAllPost, userPost, likePost, commentPost, find };

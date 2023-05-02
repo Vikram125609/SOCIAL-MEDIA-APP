@@ -1,7 +1,6 @@
 const express = require('express');
 const { followUser, allFollower, profile, me, friends, createPost, getAllPost, userPost, likePost, commentPost, find } = require('../controllers/userController');
 const globalAccess = require('../middlewares/auth');
-// const globalAccess = require('../middlewares/auth');
 const { upload } = require('../middlewares/multer');
 const router = express.Router();
 router.post("/follow/:id", globalAccess, followUser);
