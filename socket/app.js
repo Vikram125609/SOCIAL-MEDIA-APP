@@ -1,8 +1,10 @@
+const { default: axios } = require('axios');
 const express = require('express');
 const http = require('http');
 const app = express();
 const server = http.createServer(app);
 const { Server } = require('socket.io');
+const { notify } = require('./Api/Api');
 
 const io = new Server(server, {
     cors: {
@@ -12,7 +14,7 @@ const io = new Server(server, {
 
 io.on('connection', (socket) => {
     console.log('Connected', socket.id);
-    socket.join(socket.id);
+    socket.join(`${socket.handshake.query.user_id}`)
     socket.on('sendMessage', (data) => {
         console.log(data);
         socket.broadcast.emit('broadCast', data);
@@ -29,7 +31,14 @@ io.on('connection', (socket) => {
             users.push(socket.handshake.query.user_id);
         }
         socket.emit('connectedUsers', users);
-    })
+    });
+    socket.on('profileView', async (data) => {
+        const notifications = await notify(data);
+        if (notifications?.data?.code === 201) {
+            return;
+        }
+        socket.to(`${data?.viewed}`).emit('viewed', notifications?.data?.data);
+    });
     // socket.on('privateMessage', (data) => {
     //     const { message, friend_id, my_socket_id } = data;
     //     const users = [];

@@ -1,3 +1,4 @@
+import Searchuser from "./Searchuser"
 import { Link } from "react-router-dom";
 import { AppBar } from "@mui/material";
 import { Toolbar } from "@mui/material";
@@ -15,12 +16,75 @@ import ControlPointOutlinedIcon from '@mui/icons-material/ControlPointOutlined';
 import MessageIcon from '@mui/icons-material/Message';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { find, profileViewCount } from "../../Api/Api";
+import { useEffect, useReducer, useState } from "react";
+import { socket } from "../../socket";
+// importing Toast
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { Typography } from "@material-ui/core";
 
 // Constants
 const toolbarLeftRightMargin = "100px";
 const iconColor = "white";
 
+const initialState = {
+    visibilitySearchUserContainer: 'hidden',
+    dataSearchUserContainer: [],
+    profileViewCount: 0
+}
+const reducer = (currentState, action) => {
+    switch (action.type) {
+        case 'hidden':
+            return { ...currentState, visibilitySearchUserContainer: 'hidden' };
+        case 'data':
+            return { ...currentState, dataSearchUserContainer: action.data, visibilitySearchUserContainer: 'visible' };
+        case 'profileViewCount':
+            return { ...currentState, profileViewCount: action?.profileViewCount }
+
+    }
+}
+
 const Navbar = () => {
+    const [state, dispatch] = useReducer(reducer, initialState);
+
+    const getProfileViewCount = async () => {
+        const data = await profileViewCount();
+        dispatch({ type: 'profileViewCount', profileViewCount: data?.data?.data?.profileViewCount });
+    };
+
+    useEffect(() => {
+        socket.on('viewed', ({ profileViewCount }) => {
+            toast(`Profile View Count ${profileViewCount}`);
+            dispatch({ type: 'profileViewCount', profileViewCount: profileViewCount });
+        })
+    }, []);
+
+    useEffect(() => {
+        getProfileViewCount();
+    });
+
+    const searchUser = async (e) => {
+        const data = {
+            query: e.target.value
+        }
+        try {
+            const response = await find(data);
+            if (response?.data?.data?.data?.length === 0) {
+                dispatch({ type: 'hidden' })
+            }
+            else {
+                dispatch({ type: 'data', data: response?.data?.data?.data });
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    const visibilitySearchUserContainer = () => {
+        if (state?.visibilitySearchUserContainer === 'visible') {
+            dispatch({ type: 'hidden' });
+        }
+    }
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar color="secondary">
@@ -33,7 +97,7 @@ const Navbar = () => {
                                 color="inherit">
                                 <LinkedInIcon fontSize="large" />
                             </IconButton>
-                            <TextField id="outlined-basic" label="Search" size="small" variant="outlined" InputProps={{
+                            <TextField onBlur={visibilitySearchUserContainer} onChange={searchUser} id="outlined-basic" label="Search By First Name" size="small" variant="outlined" InputProps={{
                                 endAdornment: <InputAdornment position="end"> <SearchIcon />  </InputAdornment>,
                             }} />
                         </Stack>
@@ -56,13 +120,14 @@ const Navbar = () => {
                                     <PeopleIcon fontSize="large" />
                                 </IconButton>
                             </Link>
-                            <Link to="/home" >
+                            <Link to="/notifications" >
                                 <IconButton
                                     style={{ color: `${iconColor}` }}
                                     size="large"
                                     edge="start"
                                     color="inherit">
                                     <NotificationsIcon fontSize="large" />
+                                    <span style={{ color: 'red' }} >{state?.profileViewCount}</span>
                                 </IconButton>
                             </Link>
                             <Link to={"/profile/" + localStorage.getItem('_id')} >
@@ -78,6 +143,8 @@ const Navbar = () => {
                     </Stack>
                 </Toolbar>
             </AppBar>
+            <Searchuser dataSearchUserContainer={state?.dataSearchUserContainer} searchUserContainerVisibility={state?.visibilitySearchUserContainer} />
+            <ToastContainer />
         </Box>
     );
 };
