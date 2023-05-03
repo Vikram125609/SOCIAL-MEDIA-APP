@@ -62,7 +62,7 @@ const Navbar = () => {
 
     useEffect(() => {
         getProfileViewCount();
-    });
+    },[]);
 
     const searchUser = async (e) => {
         const data = {
