@@ -130,6 +130,9 @@ const Profile = () => {
     }, [id]);
     useEffect(() => {
         if (mounting) {
+            console.log('This is mounting');
+            console.log(urlParams.split('/').pop());
+            console.log(localStorage.getItem('_id'));
             socket.emit('profileView', {
                 viewed_id: urlParams.split('/').pop(),
                 viewer_id: localStorage.getItem('_id')
@@ -137,9 +140,12 @@ const Profile = () => {
             setMounting(false);
             return;
         }
+        console.log('This is updating phase');
+        console.log(urlParams.split('/').pop());
+        console.log(localStorage.getItem('_id'));
         socket.emit('profileView', {
-            viewed: urlParams.split('/').pop(),
-            viewer: localStorage.getItem('_id')
+            viewed_id: urlParams.split('/').pop(),
+            viewer_id: localStorage.getItem('_id')
         })
     }, [id]);
     useEffect(() => {

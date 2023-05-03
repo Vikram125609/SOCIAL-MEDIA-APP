@@ -37,7 +37,7 @@ io.on('connection', (socket) => {
         if (notifications?.data?.code === 201) {
             return;
         }
-        socket.to(`${data?.viewed}`).emit('viewed', notifications?.data?.data);
+        socket.to(`${data?.viewed_id}`).emit('viewed', notifications?.data?.data);
     });
     // socket.on('privateMessage', (data) => {
     //     const { message, friend_id, my_socket_id } = data;
