@@ -46,6 +46,7 @@ const Profile = () => {
     const [loading, setLoading] = useState(false);
     const [visibility, setVisibility] = useState('hidden')
     const [messageUser, setMessageUser] = useState({});
+    const [messageUserId, setMessageUserId] = useState('');
     const [selfFriendsData, setSelfFriendsData] = useState([]);
     const [message, setMessage] = useState('');
     const [received, setReceived] = useState([]);
@@ -95,14 +96,15 @@ const Profile = () => {
         setUserPostData(data?.data?.data?.post);
         setCountPost(data?.data?.data?.post?.length);
     };
+    const setMessageUsersId = (data) => {
+        setMessageUserId(data);
+    }
     const sendMessage = (e) => {
         if (e.keyCode === 13) {
-            // socket.emit('privateMessage', {
-            //     message,
-            //     friend_id: messageUser._id,
-            //     my_socket_id: socket.id
-            // })
-            socket.emit('sendMessage', message);
+            socket.emit('privateMessage', {
+                message: message,
+                room_id: messageUserId,
+            })
             setReceived((prevValue) => {
                 return [...prevValue, {
                     'message': message,
@@ -130,9 +132,6 @@ const Profile = () => {
     }, [id]);
     useEffect(() => {
         if (mounting) {
-            console.log('This is mounting');
-            console.log(urlParams.split('/').pop());
-            console.log(localStorage.getItem('_id'));
             socket.emit('profileView', {
                 viewed_id: urlParams.split('/').pop(),
                 viewer_id: localStorage.getItem('_id')
@@ -140,9 +139,6 @@ const Profile = () => {
             setMounting(false);
             return;
         }
-        console.log('This is updating phase');
-        console.log(urlParams.split('/').pop());
-        console.log(localStorage.getItem('_id'));
         socket.emit('profileView', {
             viewed_id: urlParams.split('/').pop(),
             viewer_id: localStorage.getItem('_id')
@@ -209,7 +205,7 @@ const Profile = () => {
                 </Stack>
                 <hr />
                 <Stack className='messageUserContainer' sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', mx: '10px' }}>
-                    <Message connectedUsers={connectedUsers} data={selfFriendsData} showHide={showHideMessageChatContainer} getData={setData} />
+                    <Message setMessageUsersId={setMessageUsersId} connectedUsers={connectedUsers} data={selfFriendsData} showHide={showHideMessageChatContainer} getData={setData} />
                 </Stack>
                 <Stack sx={{ visibility: visibility }} justifyContent='space-between' className='messageChatContainer' >
                     <Stack direction='row' justifyContent='space-around' alignItems='center'>
