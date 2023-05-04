@@ -47,6 +47,7 @@ const Profile = () => {
     const [visibility, setVisibility] = useState('hidden')
     const [messageUser, setMessageUser] = useState({});
     const [messageUserId, setMessageUserId] = useState('');
+    const [messageReceiveUserId, setMessageReceiveUserId] = useState('');
     const [selfFriendsData, setSelfFriendsData] = useState([]);
     const [message, setMessage] = useState('');
     const [received, setReceived] = useState([]);
@@ -104,6 +105,7 @@ const Profile = () => {
             socket.emit('privateMessage', {
                 message: message,
                 room_id: messageUserId,
+                user_id: localStorage.getItem('_id')
             })
             setReceived((prevValue) => {
                 return [...prevValue, {
@@ -114,9 +116,6 @@ const Profile = () => {
             setMessage('');
         }
     }
-    // socket.on('privateMessage', (data) => {
-    //     console.log(data);
-    // })
     const handleMessage = (e) => {
         setMessage(e.target.value);
     }
@@ -145,7 +144,11 @@ const Profile = () => {
         })
     }, [id]);
     useEffect(() => {
-        socket.on('broadCast', (message) => {
+        socket.on('broadCast', (data) => {
+            const { message, room_id, user_id } = data;
+            console.log('room_id', room_id);
+            console.log('user_id', user_id);
+            setMessageReceiveUserId(`${user_id}`);
             setReceived((prevValue) => {
                 return [...prevValue, {
                     'message': message,
