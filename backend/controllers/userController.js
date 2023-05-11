@@ -1,13 +1,14 @@
-const { sendSuccess } = require("../utils/apiResponse");
-const catchAsync = require("../utils/catchAsync");
+const { sendSuccess } = require('../utils/apiResponse');
+const catchAsync = require('../utils/catchAsync');
 const Follow = require('../models/followModel');
 const User = require('../models/userModel');
-const { default: mongoose} = require("mongoose");
-const Post = require("../models/postModel");
+const { default: mongoose } = require("mongoose");
+const Post = require('../models/postModel');
 const { uploadImage } = require('../utils/uploadImage');
 const path = require('path');
-const Like = require("../models/likeModel");
-const Comment = require("../models/commentModel");
+const Like = require('../models/likeModel');
+const Comment = require('../models/commentModel');
+const Chat = require('../models/chat');
 
 const followUser = catchAsync(async (req, res, next) => {
     const follow_id = req.params.id;
@@ -381,4 +382,40 @@ const find = catchAsync(async (req, res, next) => {
     return sendSuccess(res, 200, 'Users', finalResponse);
 });
 
-module.exports = { followUser, allFollower, profile, me, friends, createPost, getAllPost, userPost, likePost, commentPost, find };
+const sendMessage = catchAsync(async (req, res, next) => {
+    const { user_id, friend_id, message } = req.body;
+    const chat = new Chat({
+        user_id: user_id,
+        friend_id: friend_id,
+        message: message
+    })
+    await chat.save();
+    const finalResponse = {
+        chat: chat
+    }
+    return sendSuccess(res, 200, 'Message Sent', finalResponse);
+});
+
+const getAllMessage = catchAsync(async (req, res, next) => {
+    const { user_id, friend_id } = req.body;
+    const chat = await Chat.find({
+        $or: [
+            {
+                $and: [
+                    { user_id: mongoose.Types.ObjectId(user_id) },
+                    { friend_id: mongoose.Types.ObjectId(friend_id) }
+                ]
+            }, {
+                $and: [
+                    { user_id: mongoose.Types.ObjectId(friend_id) },
+                    { friend_id: mongoose.Types.ObjectId(user_id) }
+                ]
+            }]
+    });
+    const finalResponse = {
+        chat: chat
+    }
+    return sendSuccess(res, 200, 'All Messages', finalResponse);
+})
+
+module.exports = { followUser, allFollower, profile, me, friends, createPost, getAllPost, userPost, likePost, commentPost, find, sendMessage, getAllMessage };

@@ -35,8 +35,8 @@ io.on('connection', (socket) => {
         }
         socket.to(`${data?.viewed_id}`).emit('viewed', notifications?.data?.data);
     });
-    socket.on('privateMessage', ({ message, room_id, user_id }) => {
-        socket.to(`${room_id}`).emit('broadCast', { message: message, room_id: room_id, user_id: user_id });
+    socket.on('privateMessage', ({ message, friend_id, user_id }) => {
+        socket.to(`${friend_id}`).emit('broadCast', { message: message, friend_id: friend_id, user_id: user_id });
     })
     socket.on('disconnect', () => {
         // Here the io.emit is required because i want to notify all the users without refresh that I got offline
