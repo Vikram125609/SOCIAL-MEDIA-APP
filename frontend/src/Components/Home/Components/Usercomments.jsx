@@ -1,10 +1,17 @@
 import { Avatar, Button, Stack, Typography } from '@mui/material';
 import React from 'react'
 
+// importing css
+import './Usercomments.css';
+
+// constants
+const maxHeight = '500px'
+
+// Components
 const Usercomments = (props) => {
     const { comments } = props;
     return (
-        <Stack my={4}>
+        <Stack className='userComments' my={4} maxHeight={maxHeight} overflow='auto'>
             <Typography textAlign='center' variant='h4'>Comments</Typography>
             {
                 comments.map((data) => {
