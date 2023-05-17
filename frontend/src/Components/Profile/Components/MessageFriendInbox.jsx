@@ -12,9 +12,13 @@ import CloseIcon from '@mui/icons-material/Close';
 
 // importing hooks
 import { useEffect, useReducer } from 'react';
+import { useNavigate } from 'react-router-dom'
 
 // importing api's
 import { chat, getAllMessage } from '../../../Api/Api';
+
+// importing peer 
+import Peer from '../../WebRTC/Peer';
 
 const initialState = {
     message: '',
@@ -38,6 +42,7 @@ const reducer = (currentState, action) => {
 
 const MessageFriendInbox = (props) => {
     const [state, dispatch] = useReducer(reducer, initialState);
+    const navigate = useNavigate();
     const { messageUser, messageUserId, closeMessageInbox } = props;
     const sendMessage = async (e) => {
         if (e.keyCode === 13) {
@@ -67,6 +72,18 @@ const MessageFriendInbox = (props) => {
         const response = await getAllMessage(data);
         dispatch({ type: 'getAllMessages', chat: response?.data?.data?.chat });
     }
+
+    const videoCall = async () => {
+        const offer = await Peer.getOffer();
+        const data = {
+            from: localStorage.getItem('_id'),
+            to: messageUserId,
+            offer: offer
+        }
+        socket.emit('video:call', data);
+        navigate(`/call/${localStorage.getItem('_id')}-${messageUserId}`);
+    };
+
     useEffect(() => {
         socket.on('broadCast', ({ message, friend_id, user_id }) => {
             getAllMessages(friend_id, user_id);
@@ -89,7 +106,7 @@ const MessageFriendInbox = (props) => {
                 <Avatar sx={{ height: 50, width: 50 }} src={messageUser?.image} />
                 <Typography>{messageUser?.first_name + ' ' + messageUser?.last_name}</Typography>
                 <LocalPhoneIcon />
-                <VideoCallIcon />
+                <VideoCallIcon onClick={videoCall} />
                 <CloseIcon sx={{ cursor: 'pointer' }} onClick={() => {
                     closeMessageInbox();
                 }} />

@@ -84,4 +84,14 @@ const profileViewCount = catchAsync(async (req, res, next) => {
 
     return sendSuccess(res, 200, 'User Notified', finalResponse)
 });
-module.exports = { allUsers, notify, notifications, profileViewCount };
+
+const userDetail = catchAsync(async (req, res, next) => {
+    const { _id } = req.body;
+    const userDetail = await User.findById(_id);
+    const finalResponse = {
+        userDetail: userDetail
+    }
+    return sendSuccess(res, 200, 'User Detail', finalResponse);
+});
+
+module.exports = { allUsers, notify, notifications, profileViewCount, userDetail };

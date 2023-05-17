@@ -90,7 +90,7 @@ const Navbar = () => {
     }
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar color="secondary">
+            <AppBar className="Responsive" color="secondary">
                 <Toolbar sx={{ mx: `${toolbarLeftRightMargin}` }}>
                     <Stack direction='row' width="100%" sx={{ justifyContent: "space-between" }}>
                         <Stack direction='row' sx={{ alignItems: "center" }} spacing={2}>

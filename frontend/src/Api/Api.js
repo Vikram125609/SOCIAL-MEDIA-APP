@@ -1,6 +1,6 @@
 import axios from "axios";
 const API = axios.create({
-    baseURL: "http://localhost:3000/api/user/v1",
+    baseURL: "http://192.168.1.23:3000/api/user/v1",
     headers: {
         'authorization': localStorage.getItem('token')
     }
@@ -25,3 +25,4 @@ export const notifications = () => API.get('/notifications');
 export const profileViewCount = () => API.get('/profileViewCount');
 export const chat = (data) => API.post('/sendMessage', data);
 export const getAllMessage = (data) => API.post('/getAllMessage', data);
+export const getUserDetail = (data) => API.post('/userDetail', data);

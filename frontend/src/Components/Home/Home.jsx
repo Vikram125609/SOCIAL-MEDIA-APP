@@ -16,7 +16,6 @@ import Feed from "./Feed"
 import Post from "./Post";
 import Loader from "../Loader/Loader";
 import Navbar from "../Navigation/Navbar";
-import Likes from "./Likes";
 
 // Constants
 const marginTop = 1;
@@ -42,13 +41,14 @@ const Home = () => {
             localStorage.setItem("block_user", data.block_user);
             localStorage.setItem("follow_user", data.follow_user);
             setUserdata(data);
-            setLoading(false);
         } catch (error) {
             console.log(error);
         }
     }
     const getAllPosts = async () => {
+        setLoading(true);
         const data = await getAllPost();
+        setLoading(false);
         setFeed(data?.data?.data?.post);
     }
     const handelPopupDisplay = () => {
