@@ -23,3 +23,5 @@ export const commentPost = (data) => API.post(`/comment/post/${data?.post_id}`, 
 export const find = (data) => API.post('/find', data);
 export const notifications = () => API.get('/notifications');
 export const profileViewCount = () => API.get('/profileViewCount');
+export const chat = (data) => API.post('/sendMessage', data);
+export const getAllMessage = (data) => API.post('/getAllMessage', data);

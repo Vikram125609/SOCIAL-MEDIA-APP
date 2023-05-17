@@ -7,10 +7,8 @@ const Follow = require('./../models/followModel');
 
 const allUsers = catchAsync(async (req, res, next) => {
     let { _id } = req.user;
-    // let _id = "63d76d37b5656f8db054f989";
     let data = await User.find();
     let user = await User.findById(req.user._id);
-    // let user = await User.findById("63d76d37b5656f8db054f989");
     let following = await Follow.find({ user_id: _id });
     data = JSON.parse(JSON.stringify(data));
     user = JSON.parse(JSON.stringify(user));
@@ -27,17 +25,17 @@ const allUsers = catchAsync(async (req, res, next) => {
 });
 
 const notify = catchAsync(async (req, res, next) => {
-    const { viewer, viewed } = req.body;
+    const { viewer_id, viewed_id } = req.body;
 
-    if (viewed === viewer) {
+    if (viewed_id === viewer_id) {
         return sendSuccess(res, 201, 'You Are Watching Your Self Profile Only', {})
     }
 
-    const checkAlreadyExist = await Notification.exists({ viewer_id: viewer, viewed_id: viewed })
+    const checkAlreadyExist = await Notification.exists({ viewer_id: viewer_id, viewed_id: viewed_id })
 
     if (checkAlreadyExist) {
-        await Notification.findOneAndUpdate({ viewer_id: viewer, viewed_id: viewed }, { seen: false });
-        const profileViewCount = await Notification.find({ $and: [{ viewed_id: viewed }, { seen: false }] })
+        await Notification.findOneAndUpdate({ viewer_id: viewer_id, viewed_id: viewed_id }, { seen: false });
+        const profileViewCount = await Notification.find({ $and: [{ viewed_id: viewed_id }, { seen: false }] })
         const finalResponse = {
             profileViewCount: profileViewCount.length
         }
@@ -45,13 +43,13 @@ const notify = catchAsync(async (req, res, next) => {
     }
 
     const notification = new Notification({
-        viewer_id: mongoose.Types.ObjectId(viewer),
-        viewed_id: mongoose.Types.ObjectId(viewed)
+        viewer_id: mongoose.Types.ObjectId(viewer_id),
+        viewed_id: mongoose.Types.ObjectId(viewed_id)
     });
 
     await notification.save();
 
-    const profileViewCount = await Notification.find({ $and: [{ viewed_id: viewed }, { seen: false }] })
+    const profileViewCount = await Notification.find({ $and: [{ viewed_id: viewed_id }, { seen: false }] })
 
     const finalResponse = {
         notification: notification,

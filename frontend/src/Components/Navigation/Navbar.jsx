@@ -12,17 +12,17 @@ import { Avatar } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import HomeIcon from '@mui/icons-material/Home';
 import PeopleIcon from '@mui/icons-material/People';
-import ControlPointOutlinedIcon from '@mui/icons-material/ControlPointOutlined';
-import MessageIcon from '@mui/icons-material/Message';
+// import ControlPointOutlinedIcon from '@mui/icons-material/ControlPointOutlined';
+// import MessageIcon from '@mui/icons-material/Message';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+// import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { find, profileViewCount } from "../../Api/Api";
 import { useEffect, useReducer, useState } from "react";
 import { socket } from "../../socket";
 // importing Toast
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Typography } from "@material-ui/core";
+// import { Typography } from "@material-ui/core";
 
 // Constants
 const toolbarLeftRightMargin = "100px";
@@ -58,11 +58,14 @@ const Navbar = () => {
             toast(`Profile View Count ${profileViewCount}`);
             dispatch({ type: 'profileViewCount', profileViewCount: profileViewCount });
         })
+        return () => {
+            socket.off('viewed').off();
+        }
     }, []);
 
     useEffect(() => {
         getProfileViewCount();
-    });
+    },[]);
 
     const searchUser = async (e) => {
         const data = {
