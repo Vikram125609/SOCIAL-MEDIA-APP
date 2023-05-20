@@ -44,6 +44,7 @@ const MessageFriendInbox = (props) => {
     const [state, dispatch] = useReducer(reducer, initialState);
     const navigate = useNavigate();
     const { messageUser, messageUserId, closeMessageInbox } = props;
+    localStorage.setItem('messageUserId', messageUserId);
     const sendMessage = async (e) => {
         if (e.keyCode === 13) {
             socket.emit('privateMessage', {
@@ -86,8 +87,9 @@ const MessageFriendInbox = (props) => {
 
     useEffect(() => {
         socket.on('broadCast', ({ message, friend_id, user_id }) => {
-            getAllMessages(friend_id, user_id);
-            console.log(message, new Date().toLocaleString())
+            if (localStorage.getItem('messageUserId') === user_id) {
+                getAllMessages(friend_id, user_id);
+            }
         })
     }, []);
     useEffect(() => {
@@ -97,9 +99,7 @@ const MessageFriendInbox = (props) => {
         }
         getAllMessages(messageUserId, localStorage.getItem('_id'));
     }, [messageUserId]);
-    useEffect(() => {
-        console.log(state?.chat);
-    }, [state?.chat]);
+
     return (
         <>
             <Stack direction='row' justifyContent='space-around' alignItems='center'>

@@ -1,6 +1,6 @@
 import { io } from 'socket.io-client';
 
-const URL = 'http://192.168.1.23:3002';
+const URL = 'http://localhost:3002';
 
 export const socket = io(URL, {
     autoConnect: false,
