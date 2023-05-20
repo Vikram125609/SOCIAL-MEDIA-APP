@@ -3,15 +3,7 @@ const socketServer = require('./app');
 require('dotenv').config({ path: "./config.env" })
 
 process.on('uncaughtException', err => {
-    console.log('UNCAUGHT EXCEPTION! 💥 Shutting down...');
     console.log(err.name, err.message);
-    process.exit(1);
-});
-
-process.on('exit', (code) => {
-    if (code != 0) {
-        console.log(`Restart the server 🔥 🔥 🔥`)
-    }
 });
 
 mongoose.set("strictQuery", false);
