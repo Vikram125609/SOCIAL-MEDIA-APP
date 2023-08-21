@@ -7,7 +7,7 @@ const Users = (props) => {
         window.open(e.target.src);
     }
     const { content, data } = props;
-    if (content != 'Followers' && content != 'Following' && content != 'Friends') {
+    if (content !== 'Followers' && content !== 'Following' && content !== 'Friends') {
         return;
     }
     else {
@@ -21,7 +21,7 @@ const Users = (props) => {
                                     <Avatar onClick={imageClicked} sx={{ height: 100, width: 100, border: '1px solid black' }} src={data.image} />
                                     <Typography color='secondary' variant='body1'>{data.first_name}</Typography>
                                     <Typography color='secondary' variant='body1'>{data.last_name}</Typography>
-                                    <Button color={color} variant='outlined'> Message </Button>
+                                    <Button color={color} variant='outlined'> Follow </Button>
                                 </Box>
                             </Link>
                         )

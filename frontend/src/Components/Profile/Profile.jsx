@@ -121,10 +121,9 @@ const Profile = () => {
     useEffect(() => {
         socket.emit('getAgainAllConnectedUsers');
         socket.on('connectedUsers', (data) => {
-            console.log(data);
             setConnectedUsers(data);
         })
-    }, [])
+    }, []);
     return (
         <>
             <ToastContainer />

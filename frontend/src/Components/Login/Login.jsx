@@ -49,6 +49,7 @@ const Login = () => {
             localStorage.setItem("user_id", data.user.user_id);
             localStorage.setItem("block_user", data.user.block_user);
             localStorage.setItem("follow_user", data.user.follow_user);
+            window.location.reload();
             navigate("/home");
         } catch (error) {
             console.log(error);

@@ -6,7 +6,6 @@ cloudinary.config({
     api_secret: process.env.api_secret
 });
 
-console.log(cloudinary.config());
 
 const uploadImage = async (imagePath) => {
     const options = {
