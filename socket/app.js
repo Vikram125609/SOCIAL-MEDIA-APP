@@ -13,7 +13,6 @@ const io = new Server(server, {
 });
 
 io.on('connection', (socket) => {
-    console.log('Connected', socket.id);
     socket.join(`${socket.handshake.query.user_id}`)
     const users = [];
     for (let [id, socket] of io.of("/").sockets) {
@@ -39,8 +38,6 @@ io.on('connection', (socket) => {
         socket.to(`${friend_id}`).emit('broadCast', { message: message, friend_id: friend_id, user_id: user_id });
     })
     socket.on('disconnect', () => {
-        // Here the io.emit is required because i want to notify all the users without refresh that I got offline
-        console.log('Disconnected');
         const users = [];
         for (let [id, socket] of io.of("/").sockets) {
             users.push(socket.handshake.query.user_id);

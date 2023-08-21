@@ -1,6 +1,6 @@
 const { default: axios } = require('axios');
 const API = axios.create({
-    baseURL: "http://localhost:3000/api/user/v1",
+    baseURL: "http://localhost:3001/api/user/v1",
 });
 
 const notify = (data) => API.post(`/notify/${data.viewed}`, data);
