@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { allFollowers, allUsers } from '../../Api/Api';
 import Loader from '../Loader/Loader';
-import Usercard from './Usercard';
+import Usercard from './Usercard.tsx';
 import "./User.css"
 import Navbar from '../Navigation/Navbar';
 const User = () => {
