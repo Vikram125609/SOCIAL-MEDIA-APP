@@ -7,7 +7,7 @@ const Users = (props) => {
         window.open(e.target.src);
     }
     const { content, data } = props;
-    if (content != 'Followers' && content != 'Following' && content != 'Friends') {
+    if (content !== 'Followers' && content !== 'Following' && content !== 'Friends') {
         return;
     }
     else {
